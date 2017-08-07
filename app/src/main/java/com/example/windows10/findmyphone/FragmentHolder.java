@@ -1,6 +1,7 @@
 package com.example.windows10.findmyphone;
 
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 
 /**
  * Created by Windows10 on 2017-08-04.

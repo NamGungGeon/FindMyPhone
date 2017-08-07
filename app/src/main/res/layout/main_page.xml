@@ -6,21 +6,21 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
-        android:layout_above="@id/appStatus"
+        android:layout_above="@+id/appStatus"
         android:id="@+id/appStatusIcon"
         android:src="@drawable/ex"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="App Status"
-        android:layout_above="@id/__meanless"
+        android:layout_above="@+id/meanlesss"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:id="@+id/appStatus"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/__meanless"
+        android:id="@+id/meanlesss"
         android:text="^_______^"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
@@ -33,5 +33,5 @@
         android:src="@drawable/ex"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/__meanless"/>
+        android:layout_below="@id/meanlesss"/>
 </RelativeLayout>

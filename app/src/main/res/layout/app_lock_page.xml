@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#80c89f"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/pinNumberWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="3"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                android:textSize="25dp"
+                android:id="@+id/firstPIN"
+                android:text="_"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                android:textSize="25dp"
+                android:id="@+id/secondPIN"
+                android:text="_"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                android:textSize="25dp"
+                android:id="@+id/thirdPIN"
+                android:text="_"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                android:textSize="25dp"
+                android:id="@+id/forthPIN"
+                android:text="_"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="6"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageButton
+                        android:id="@+id/one"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_margin="15dp"
+                        android:layout_toLeftOf="@+id/two"
+                        android:background="@drawable/one" />
+
+                    <ImageButton
+                        android:id="@+id/two"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="15dp"
+                        android:background="@drawable/two" />
+
+                    <ImageButton
+                        android:id="@+id/three"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_margin="15dp"
+                        android:layout_toRightOf="@+id/two"
+                        android:background="@drawable/three" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageButton
+                        android:id="@+id/four"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_margin="15dp"
+                        android:layout_toLeftOf="@+id/five"
+                        android:background="@drawable/four" />
+
+                    <ImageButton
+                        android:id="@+id/five"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="15dp"
+                        android:background="@drawable/five" />
+
+                    <ImageButton
+                        android:id="@+id/six"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_margin="15dp"
+                        android:layout_toRightOf="@+id/five"
+                        android:background="@drawable/six" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/seven"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="15dp"
+                    android:layout_toLeftOf="@+id/eight"
+                    android:background="@drawable/seven" />
+
+                <ImageButton
+                    android:id="@+id/eight"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/eight"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_alignTop="@+id/seven"
+                    android:layout_centerHorizontal="true" />
+
+                <ImageButton
+                    android:id="@+id/nine"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="15dp"
+                    android:layout_toRightOf="@+id/eight"
+                    android:background="@drawable/nine" />
+            </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                        <ImageButton
+                            android:id="@+id/zero"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_centerInParent="true"
+                            android:layout_margin="15dp"
+                            android:background="@drawable/zero" />
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+</LinearLayout>

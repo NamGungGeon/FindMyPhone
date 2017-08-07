@@ -8,11 +8,11 @@
         android:layout_height="200dp"
         android:src="@drawable/ex"
         android:id="@+id/googleLogin"
-        android:layout_above="@id/_meanless"/>
+        android:layout_above="@+id/meanLess"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/_meanless"
+        android:id="@+id/meanLess"
         android:text="^_______^"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
@@ -22,6 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:src="@drawable/ex"
-        android:layout_below="@id/_meanless"
+        android:layout_below="@+id/meanLess"
         android:id="@+id/facebookLogin"/>
 </RelativeLayout>

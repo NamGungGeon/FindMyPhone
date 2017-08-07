@@ -14,7 +14,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     private final int PERMISSION_REQUEST_CODE=1234;
 
-    FragmentTransaction transaction=null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,15 +26,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         permissionCheck();
-
-        if(Settings.isFirst){
-            transaction=getSupportFragmentManager().beginTransaction();
-            FragmentHolder.setFirstStartFragment(new FirstStartFragment());
-            transaction.replace(R.id.mainContainer, FragmentHolder.getFirstStartFragment());
-            transaction.commit();
-        }else{
-
-        }
+        startAppProtect();
     }
 
     private boolean permissionCheck(){
@@ -46,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }else{
             //All Permission is not granted
-            DialogMaker whyNeedPermissionExplain=new DialogMaker();
+            final DialogMaker whyNeedPermissionExplain=new DialogMaker();
             final Activity thisActivty=this;
             DialogMaker.Callback ok=new DialogMaker.Callback() {
                 @Override
@@ -55,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
                             {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             Manifest.permission.CAMERA};
                     ActivityCompat.requestPermissions(thisActivty, requestPermissionList, PERMISSION_REQUEST_CODE);
+                    whyNeedPermissionExplain.dismiss();
                 }
             };
             DialogMaker.Callback appClose=new DialogMaker.Callback() {
@@ -80,6 +73,21 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 break;
+        }
+    }
+
+    public void startAppProtect(){
+        if(Settings.isLockThisApp){
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new AppLockerFragment()).commit();
+        }else{
+            if(Settings.isFirst){
+                FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.mainContainer, new FirstStartFragment());
+                transaction.commit();
+            }else{
+                FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.mainContainer, new MainPageFragment()).commit();
+            }
         }
     }
 }
