@@ -1,7 +1,5 @@
 package com.example.windows10.findmyphone;
 
-import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,6 +22,8 @@ public class AppLockerFragment extends Fragment {
     final private TextView pinStatus[]=new TextView[4];
     private ImageButton pinNumberBtn[]=new ImageButton[9];
     private ImageButton zeroPinNumberBtn=null;
+
+    private int PIN_errorStack=0;
 
     @Nullable
     @Override
@@ -81,6 +81,12 @@ public class AppLockerFragment extends Fragment {
             inputPIN="";
             for(int i=0; i<4; i++){
                 pinStatus[i].setText("_");
+            }
+
+            PIN_errorStack++;
+            if(PIN_errorStack==3){
+                Toast.makeText(getActivity().getApplicationContext(), "3회 이상 틀렸습니다. 앱을 종료합니다.", Toast.LENGTH_LONG).show();
+                getActivity().finish();
             }
         }else{
             pinStatus[inputPIN.length()-1].setText("*");

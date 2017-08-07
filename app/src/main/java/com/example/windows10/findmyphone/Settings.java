@@ -9,6 +9,6 @@ public class Settings {
     private Settings(){}
 
     public static boolean isFirst=true;
-    public static boolean isLockThisApp=true;
+    public static boolean isLockThisApp=false;
     public static String appPassWord="1234";
 }

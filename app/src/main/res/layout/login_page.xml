@@ -2,12 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="40dp">
+    android:background="#80c89f"
+    android:padding="40dp">
     <ImageButton
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@drawable/ex"
         android:id="@+id/googleLogin"
+        android:src="@drawable/ex"
         android:layout_above="@+id/meanLess"/>
     <TextView
         android:layout_width="wrap_content"
