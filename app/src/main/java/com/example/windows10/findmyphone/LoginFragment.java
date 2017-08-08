@@ -1,6 +1,5 @@
 package com.example.windows10.findmyphone;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +21,8 @@ public class LoginFragment extends Fragment {
             switch(view.getId()){
                 case R.id.googleLogin:
                     //Developing...
+                    //Test Code
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new MainPageFragment()).commit();
                     break;
                 case R.id.facebookLogin:
                     //Developing...

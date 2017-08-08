@@ -14,7 +14,8 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     private final int PERMISSION_REQUEST_CODE=1234;
 
-
+    //public SharedPreferences preferences=getSharedPreferences("Preference", MODE_PRIVATE);
+    //public SharedPreferences.Editor preferenceEditor=preferences.edit();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
         //Permission Check
         if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED){
+                && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECEIVE_SMS)==PackageManager.PERMISSION_GRANTED){
             //All Permission is granted
             return true;
         }else{
@@ -44,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void callbackMethod() {
                     String requestPermissionList[]=new String[]
-                            {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.CAMERA};
+                            {Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_EXTERNAL_STORAGE,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
                     ActivityCompat.requestPermissions(thisActivty, requestPermissionList, PERMISSION_REQUEST_CODE);
                     whyNeedPermissionExplain.dismiss();
                 }

@@ -8,15 +8,23 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.Serializable;
 
 /**
  * Created by Windows10 on 2017-08-05.
  */
 
 //백그라운드에서 쓰레드를 이용해 계속해서 앱 상태를 점검해야 함(미구현).
-public class MainPageFragment extends Fragment {
+public class MainPageFragment extends Fragment implements Serializable{
+    public ImageView appStatusIcon;
+    public TextView appStatus;
+
+    private ImageButton settingBtn=null;
+
     @NonNull
     private View.OnClickListener onClickListener=new View.OnClickListener() {
         @Override
@@ -33,17 +41,22 @@ public class MainPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView=(ViewGroup)inflater.inflate(R.layout.main_page, container, false);
+
+        appStatusIcon=(ImageView)rootView.findViewById(R.id.appStatusIcon);
+        appStatus=(TextView)rootView.findViewById(R.id.appStatus);
+        settingBtn=(ImageButton)rootView.findViewById(R.id.settingBtn);
+        settingBtn.setOnClickListener(onClickListener);
+
         appStatusCheck(rootView);
 
-        Intent checkAppStatusThread=new Intent(getContext(), CheckAppStatusInBackground.class);
-        getActivity().startService(checkAppStatusThread);
+        Intent checkAppStatusThread=new Intent(getActivity().getApplicationContext(), CheckAppStatusInBackground.class);
+        //checkAppStatusThread.putExtras((new Intent()).putExtra("Status", this));
+        //getActivity().startService(checkAppStatusThread);
 
         return rootView;
     }
 
     private void appStatusCheck(ViewGroup rootView){
-        ImageView appStatusIcon=(ImageView)rootView.findViewById(R.id.appStatusIcon);
-        TextView appStatus=(TextView)rootView.findViewById(R.id.appStatus);
         if(true){
             //When App status is fine
             appStatusIcon.setImageResource(R.drawable.shield);
@@ -54,4 +67,5 @@ public class MainPageFragment extends Fragment {
             appStatus.setText("앱이 정상적으로 작동하지 않고 있습니다");
         }
     }
+
 }
