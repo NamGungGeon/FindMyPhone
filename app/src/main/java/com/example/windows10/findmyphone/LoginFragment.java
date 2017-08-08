@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 /**
@@ -36,9 +37,9 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView=(ViewGroup)inflater.inflate(R.layout.login_page, container, false);
 
-        ImageButton googleLoginBtn=(ImageButton)rootView.findViewById(R.id.googleLogin);
+        Button googleLoginBtn=(Button)rootView.findViewById(R.id.googleLogin);
         googleLoginBtn.setOnClickListener(onClickListener);
-        ImageButton facebookLoginBtn=(ImageButton)rootView.findViewById(R.id.facebookLogin);
+        Button facebookLoginBtn=(Button)rootView.findViewById(R.id.facebookLogin);
         facebookLoginBtn.setOnClickListener(onClickListener);
 
         return rootView;

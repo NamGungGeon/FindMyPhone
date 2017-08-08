@@ -31,6 +31,7 @@ public class CheckAppStatusInBackground extends Service implements Runnable{
     private final int NOT_DOING_GPS_ERROR=1002;
     private final int NOT_GET_PERMISSION=1003;
 
+    private Settings settings=Settings.getInstance(getApplicationContext());
 
     @Override
     public void onCreate() {
@@ -50,6 +51,7 @@ public class CheckAppStatusInBackground extends Service implements Runnable{
         return null;
     }
 
+    //문제가 발생하면 알림창도 띄워줄 것(미구현)
     @Override
     public void run() {
         while(isRunningCheck){
@@ -61,7 +63,7 @@ public class CheckAppStatusInBackground extends Service implements Runnable{
             }
 
             //Check App is locked
-            if(Settings.isLockThisApp==false){
+            if(settings.getIsLockThisApp()==false){
                 appStatusReport(true, NOT_LOCK_ERROR);
                 continue;
             }

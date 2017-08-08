@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,7 +24,8 @@ public class MainPageFragment extends Fragment implements Serializable{
     public ImageView appStatusIcon;
     public TextView appStatus;
 
-    private ImageButton settingBtn=null;
+    private Button settingBtn=null;
+    private Button helpBtn=null;
 
     @NonNull
     private View.OnClickListener onClickListener=new View.OnClickListener() {
@@ -31,7 +33,8 @@ public class MainPageFragment extends Fragment implements Serializable{
         public void onClick(View view) {
             switch(view.getId()){
                 case R.id.settingBtn:
-                    //SettingActivity Open
+                    Intent intent=new Intent(getActivity().getApplicationContext(), SettingActivity.class);
+                    startActivity(intent);
                     break;
             }
         }
@@ -44,8 +47,11 @@ public class MainPageFragment extends Fragment implements Serializable{
 
         appStatusIcon=(ImageView)rootView.findViewById(R.id.appStatusIcon);
         appStatus=(TextView)rootView.findViewById(R.id.appStatus);
-        settingBtn=(ImageButton)rootView.findViewById(R.id.settingBtn);
+
+        settingBtn=(Button)rootView.findViewById(R.id.settingBtn);
         settingBtn.setOnClickListener(onClickListener);
+        helpBtn=(Button)rootView.findViewById(R.id.helpBtn);
+        helpBtn.setOnClickListener(onClickListener);
 
         appStatusCheck(rootView);
 
@@ -59,11 +65,11 @@ public class MainPageFragment extends Fragment implements Serializable{
     private void appStatusCheck(ViewGroup rootView){
         if(true){
             //When App status is fine
-            appStatusIcon.setImageResource(R.drawable.shield);
-            appStatus.setText("앱이 정상 작동 중입니다");
+            appStatusIcon.setImageResource(R.drawable.main_icon);
+            appStatus.setText("앱이 정상 작동 중입니다...");
         }else{
             //When App can't be running (because something is wrong)
-            appStatusIcon.setImageResource(R.drawable.cracked_shield);
+            appStatusIcon.setImageResource(R.drawable.blocking);
             appStatus.setText("앱이 정상적으로 작동하지 않고 있습니다");
         }
     }

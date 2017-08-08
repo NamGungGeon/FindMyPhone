@@ -14,6 +14,10 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        
+        //Hide Label Bar
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().hide();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.settingActivityContainer, new MainSettingFragment()).commit();
     }
 }

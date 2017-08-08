@@ -4,25 +4,30 @@
     android:background="#80c89f"
     android:layout_height="match_parent">
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/meanless"
-        android:background="@drawable/ex"/>
+        android:background="@drawable/main_icon"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/meanless"
-        android:text="^_______^"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:text="Find My Phone"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="30dp"
-        android:visibility="invisible"/>
-    <ImageButton
+        android:layout_margin="45dp"/>
+    <Button
         android:layout_width="150dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:id="@+id/startBtn"
-        android:background="@drawable/ex"
+        android:text="시작"
+        android:textColor="#FFFFFF"
+        android:textSize="25dp"
+        android:background="#56b48c"
+        android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/meanless"/>
 </RelativeLayout>

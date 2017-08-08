@@ -2,13 +2,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#80c89f"
-    android:padding="40dp">
-    <ImageButton
+    android:background="#80c89f">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="65dp"
+        android:background="#59C291">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="25dp"
+            android:textColor="#FFFFFF"
+            android:text="회원 가입"/>
+    </RelativeLayout>
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="150dp"
         android:id="@+id/googleLogin"
-        android:src="@drawable/ex"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/login_google"
         android:layout_above="@+id/meanLess"/>
     <TextView
         android:layout_width="wrap_content"
@@ -19,10 +32,11 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
         android:visibility="invisible"/>
-    <ImageButton
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:src="@drawable/ex"
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/login_facebook"
         android:layout_below="@+id/meanLess"
         android:id="@+id/facebookLogin"/>
 </RelativeLayout>

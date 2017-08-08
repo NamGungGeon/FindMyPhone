@@ -9,9 +9,10 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/main_icon"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:label="Find My Phone"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -19,6 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.example.windows10.findmyphone.SettingActivity"></activity>
 
         <service
             android:name="com.example.windows10.findmyphone.CheckAppStatusInBackground" android:enabled="true"></service>

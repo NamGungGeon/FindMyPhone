@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 public class AppLockerFragment extends Fragment {
 
+    private Settings settings=Settings.getInstance(getActivity().getApplicationContext());
+
     private String inputPIN="";
 
     final private TextView pinStatus[]=new TextView[4];
@@ -68,15 +70,15 @@ public class AppLockerFragment extends Fragment {
     }
 
     public void checkRightPIN() {
-        if(inputPIN.equals(Settings.appPassWord)){
+        if(inputPIN.equals(settings.getAppPassWord())){
             FragmentTransaction transaction=getActivity().getSupportFragmentManager().beginTransaction();
-            if(Settings.isFirst){
+            if(settings.getIsFirst()){
                 transaction.replace(R.id.mainContainer, new FirstStartFragment());
             }else{
                 transaction.replace(R.id.mainContainer, new MainPageFragment());
             }
             transaction.commit();
-        }else if(inputPIN.length()==Settings.appPassWord.length()){
+        }else if(inputPIN.length()==settings.getAppPassWord().length()){
             Toast.makeText(getActivity().getApplicationContext(), "PIN번호가 틀립니다", Toast.LENGTH_SHORT).show();
             inputPIN="";
             for(int i=0; i<4; i++){

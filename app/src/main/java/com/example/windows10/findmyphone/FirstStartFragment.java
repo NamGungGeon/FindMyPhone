@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 /**
@@ -31,7 +32,7 @@ public class FirstStartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView=(ViewGroup)inflater.inflate(R.layout.first_start_page, container, false);
 
-        ImageButton startBtn=(ImageButton)rootView.findViewById(R.id.startBtn);
+        Button startBtn=(Button)rootView.findViewById(R.id.startBtn);
         startBtn.setOnClickListener(onClickListener);
 
         return rootView;

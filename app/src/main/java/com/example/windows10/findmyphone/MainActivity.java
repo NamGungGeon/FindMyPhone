@@ -2,6 +2,7 @@ package com.example.windows10.findmyphone;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,14 +14,14 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private final int PERMISSION_REQUEST_CODE=1234;
-
-    //public SharedPreferences preferences=getSharedPreferences("Preference", MODE_PRIVATE);
-    //public SharedPreferences.Editor preferenceEditor=preferences.edit();
+    private Settings settings=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        settings=Settings.getInstance(getApplicationContext());
 
         //Hide Label Bar
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -79,10 +80,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startAppProtect(){
-        if(Settings.isLockThisApp){
+        if(settings.getIsLockThisApp()){
             getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new AppLockerFragment()).commit();
         }else{
-            if(Settings.isFirst){
+            if(settings.getIsFirst()){
                 FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.mainContainer, new FirstStartFragment());
                 transaction.commit();
@@ -90,6 +91,17 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.mainContainer, new MainPageFragment()).commit();
             }
+        }
+    }
+
+    private long time=0;
+    @Override
+    public void onBackPressed() {
+        if(System.currentTimeMillis()-time<3000L){
+            time=System.currentTimeMillis();
+            Toast.makeText(getApplicationContext(), "'뒤로'버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT).show();
+        }else{
+            super.onBackPressed();
         }
     }
 }
