@@ -37,12 +37,14 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_margin="15dp"
-                    android:background="@drawable/settings"/>
+                    android:id="@+id/appLock"
+                    android:background="@drawable/unlock"/>
                 <Button
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_margin="15dp"
-                    android:background="@drawable/help"/>
+                    android:id="@+id/receiveInfo"
+                    android:background="@drawable/receive_ok"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -55,12 +57,14 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_margin="15dp"
-                    android:background="@drawable/settings"/>
+                    android:id="@+id/statusGPS"
+                    android:background="@drawable/undoing_gps"/>
                 <Button
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_margin="15dp"
-                    android:background="@drawable/help"/>
+                    android:id="@+id/changeKey"
+                    android:background="@drawable/key_change"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -72,12 +76,14 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_margin="15dp"
-                    android:background="@drawable/settings"/>
+                    android:id="@+id/insertKey"
+                    android:background="@drawable/insert_code"/>
                 <Button
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_margin="15dp"
-                    android:background="@drawable/help"/>
+                    android:id="@+id/devInfo"
+                    android:background="@drawable/dev_info"/>
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>

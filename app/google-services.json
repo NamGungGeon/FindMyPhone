@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "879717707970",
+    "firebase_url": "https://find-my-phone-ec89b.firebaseio.com",
+    "project_id": "find-my-phone-ec89b",
+    "storage_bucket": "find-my-phone-ec89b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879717707970:android:b1f8ab250cbc8823",
+        "android_client_info": {
+          "package_name": "com.example.windows10.findmyphone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "879717707970-73ilpjfpboiklo9j46d3pm6i9t7jicjq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4r_LU4CoDA33_79Fpi1ZUkUt5IkuZt18"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

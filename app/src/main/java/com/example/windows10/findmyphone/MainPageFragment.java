@@ -13,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.Serializable;
 
 /**
@@ -23,6 +25,7 @@ import java.io.Serializable;
 public class MainPageFragment extends Fragment implements Serializable{
     public ImageView appStatusIcon;
     public TextView appStatus;
+    public TextView userName;
 
     private Button settingBtn=null;
     private Button helpBtn=null;
@@ -47,6 +50,8 @@ public class MainPageFragment extends Fragment implements Serializable{
 
         appStatusIcon=(ImageView)rootView.findViewById(R.id.appStatusIcon);
         appStatus=(TextView)rootView.findViewById(R.id.appStatus);
+        userName=(TextView)rootView.findViewById(R.id.userName);
+        userName.setText(((MainActivity)getActivity()).firebaseAuth.getCurrentUser().getDisplayName()+"님 안녕하세요");
 
         settingBtn=(Button)rootView.findViewById(R.id.settingBtn);
         settingBtn.setOnClickListener(onClickListener);
@@ -66,7 +71,7 @@ public class MainPageFragment extends Fragment implements Serializable{
         if(true){
             //When App status is fine
             appStatusIcon.setImageResource(R.drawable.main_icon);
-            appStatus.setText("앱이 정상 작동 중입니다...");
+            appStatus.setText("앱이 정상 작동 중입니다");
         }else{
             //When App can't be running (because something is wrong)
             appStatusIcon.setImageResource(R.drawable.blocking);

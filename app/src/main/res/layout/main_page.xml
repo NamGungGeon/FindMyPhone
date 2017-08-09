@@ -23,16 +23,17 @@
         android:layout_height="180dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_above="@+id/mm"
+        android:layout_above="@+id/userName"
         android:id="@+id/appStatusIcon"
         android:layout_marginBottom="20dp"
         android:src="@drawable/main_icon"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="A"
-        android:id="@+id/mm"
-        android:visibility="invisible"
+        android:textColor="#FFFFFF"
+        android:textSize="18dp"
+        android:text="User Name"
+        android:id="@+id/userName"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"/>
     <TextView
@@ -42,7 +43,7 @@
         android:textColor="#FFFFFF"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_below="@+id/mm"
+        android:layout_below="@+id/userName"
         android:layout_marginTop="20dp"
         android:id="@+id/appStatus"/>
     <LinearLayout

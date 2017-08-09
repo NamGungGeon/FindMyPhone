@@ -4,29 +4,31 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 /**
  * Created by Windows10 on 2017-08-04.
  */
 
 public class LoginFragment extends Fragment {
+
     @NonNull
     private View.OnClickListener onClickListener=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             switch(view.getId()){
                 case R.id.googleLogin:
-                    //Developing...
-                    //Test Code
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new MainPageFragment()).commit();
+                    ((MainActivity)getActivity()).login_google();
                     break;
                 case R.id.facebookLogin:
                     //Developing...
+                    Toast.makeText(getActivity().getApplicationContext(), "현재는 구글 계정으로만 이용하실 수 있습니다.", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -44,4 +46,5 @@ public class LoginFragment extends Fragment {
 
         return rootView;
     }
+
 }
