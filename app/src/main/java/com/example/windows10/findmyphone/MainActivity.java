@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.telecom.Call;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -166,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void login_facebook(){
-
+        //Developing...
     }
 
     @Override
@@ -179,6 +180,8 @@ public class MainActivity extends AppCompatActivity {
                 if(result.isSuccess()){
                     firebaseAuthWithGoogle(result.getSignInAccount());
                     settings.setLoginType(settings.loginType_google);
+
+
                     getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new MainPageFragment()).commit();
                 }else{
                     final DialogMaker failToLogin=new DialogMaker();
@@ -194,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case LOGIN_FACEBOOK:
-
+                //Dev...
                 break;
         }
     }
@@ -206,6 +209,17 @@ public class MainActivity extends AppCompatActivity {
             mGoogleApiClient.disconnect();
         }
         super.onDestroy();
+    }
+
+    private void registerKeyValue(){
+        DialogMaker maker=new DialogMaker();
+        maker.setValue("Key값을 등록합니다.", "등록", "", new DialogMaker.Callback() {
+            @Override
+            public void callbackMethod() {
+                getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new KeySettingFragment());
+            }
+        }, null);
+        maker.show(getSupportFragmentManager(), "");
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -225,7 +239,6 @@ public class MainActivity extends AppCompatActivity {
                             Log.w("Firebase Auth", "signInWithCredential", task.getException());
                             Toast.makeText(getApplicationContext(), "인증 실패. 다시 시도하세요.",Toast.LENGTH_SHORT).show();
                         }
-                        // ...
                     }
                 });
     }

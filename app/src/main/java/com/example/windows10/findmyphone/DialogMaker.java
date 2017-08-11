@@ -22,6 +22,7 @@ public class DialogMaker extends DialogFragment {
     private String negativeMsg="";
     private Callback callback_positive=null;
     private Callback callback_negative=null;
+    private View childView=null;
 
 
 
@@ -33,6 +34,15 @@ public class DialogMaker extends DialogFragment {
         this.callback_positive=callback_positive;
         this.callback_negative=callback_negative;
     }
+    public void setValue(String message, String positiveMsg, String negativeMsg, Callback callback_positive, Callback callback_negative, View childView){
+        this.message=message;
+        this.positiveMsg=positiveMsg;
+        this.negativeMsg=negativeMsg;
+        this.callback_positive=callback_positive;
+        this.callback_negative=callback_negative;
+        this.childView=childView;
+    }
+
 
 
     @Override
@@ -47,6 +57,10 @@ public class DialogMaker extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                     }
                 });
+
+        if(childView!=null){
+            builder.setView(childView);
+        }
 
         // Create the AlertDialog object and return it
         final AlertDialog dialog=builder.create();
