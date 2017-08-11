@@ -15,6 +15,7 @@ public class Settings {
 
     public final String loginType_google="google";
     public final String loginType_facebook="facebook";
+
     private Settings(Context c){
         preferences=c.getSharedPreferences("Settings", Context.MODE_PRIVATE);
         editor=preferences.edit();
@@ -25,6 +26,9 @@ public class Settings {
         if(inst==null){
             inst=new Settings(c);
         }
+        return inst;
+    }
+    public static Settings getInstance(){
         return inst;
     }
 
@@ -59,6 +63,13 @@ public class Settings {
             Log.i("Preference Input Error", "in LoginType");
         }
     }
+    public boolean getReceiveStatus(){
+        return preferences.getBoolean("receiveStatus", false);
+    }
+    public void setReceiveStatus(boolean b){
+        editor.putBoolean("receiveStatus", b).apply();
+    }
+
 
 
 }

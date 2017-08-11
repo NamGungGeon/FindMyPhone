@@ -76,7 +76,7 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_margin="15dp"
-                    android:id="@+id/insertKey"
+                    android:id="@+id/inputCode"
                     android:background="@drawable/insert_code"/>
                 <Button
                     android:layout_width="150dp"

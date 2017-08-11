@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "879717707970-garivht53jqf95grme5vvggerijjqudf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.windows10.findmyphone",
+            "certificate_hash": "61cadf4eaa952999406ab38e0dff58f9d15b70bc"
+          }
+        },
+        {
           "client_id": "879717707970-73ilpjfpboiklo9j46d3pm6i9t7jicjq.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "879717707970-73ilpjfpboiklo9j46d3pm6i9t7jicjq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

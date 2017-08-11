@@ -9,11 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.Serializable;
 
@@ -51,7 +50,9 @@ public class MainPageFragment extends Fragment implements Serializable{
         appStatusIcon=(ImageView)rootView.findViewById(R.id.appStatusIcon);
         appStatus=(TextView)rootView.findViewById(R.id.appStatus);
         userName=(TextView)rootView.findViewById(R.id.userName);
-        userName.setText(((MainActivity)getActivity()).firebaseAuth.getCurrentUser().getDisplayName()+"님 안녕하세요");
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            userName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName()+"님 안녕하세요");
+        }
 
         settingBtn=(Button)rootView.findViewById(R.id.settingBtn);
         settingBtn.setOnClickListener(onClickListener);
@@ -78,5 +79,4 @@ public class MainPageFragment extends Fragment implements Serializable{
             appStatus.setText("앱이 정상적으로 작동하지 않고 있습니다");
         }
     }
-
 }

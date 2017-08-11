@@ -6,6 +6,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
+    <uses-permission android:name="android.permission.LOCATION_HARDWARE"/>
+
 
     <application
         android:allowBackup="true"
@@ -20,7 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.windows10.findmyphone.SettingActivity"></activity>
+        <activity android:name="com.example.windows10.findmyphone.SettingActivity">
+        </activity>
 
         <service
             android:name="com.example.windows10.findmyphone.CheckAppStatusInBackground" android:enabled="true"></service>

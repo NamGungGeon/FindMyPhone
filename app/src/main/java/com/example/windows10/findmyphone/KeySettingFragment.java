@@ -3,17 +3,16 @@ package com.example.windows10.findmyphone;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
+/*
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
+*/
 /**
  * Created by WINDOWS7 on 2017-08-11.
  */
@@ -129,10 +128,11 @@ public class KeySettingFragment extends Fragment {
         if(oneMoreCheck.length()==6){
             if(oneMoreCheck.equals(inputKey)){
                 //Sync FireBase
-
+                /*
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("message");
                 myRef.setValue("Hello World");
+                */
 
                 Toast.makeText(getActivity().getApplicationContext(), "키 설정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
             }else{

@@ -3,16 +3,15 @@ package com.example.windows10.findmyphone;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.telecom.Call;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,6 +30,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class MainActivity extends AppCompatActivity {
     private final int PERMISSION_REQUEST_CODE=1234;
+    private final int SETTINGS_PERMISSION_REQUEST_CODE=1235;
     private final int LOGIN_GOOGLE=1235;
     private final int LOGIN_FACEBOOK=1236;
 
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private GoogleSignInOptions gso=null;
     private GoogleApiClient mGoogleApiClient=null;
-    public FirebaseAuth firebaseAuth=null;
+    private FirebaseAuth firebaseAuth=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,20 +47,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         settings=Settings.getInstance(getApplicationContext());
-
-        firebaseAuth=FirebaseAuth.getInstance();
-        firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser()!=null){
-                    //User is login
-                    settings.setIsFirst(false);
-                }else{
-                    //User is logout
-                    settings.setIsFirst(true);
-                }
-            }
-        });
 
         //Hide Label Bar
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -75,12 +61,14 @@ public class MainActivity extends AppCompatActivity {
         if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECEIVE_SMS)==PackageManager.PERMISSION_GRANTED){
+                && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECEIVE_SMS)==PackageManager.PERMISSION_GRANTED/*
+                && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_SETTINGS)==PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_SECURE_SETTINGS)==PackageManager.PERMISSION_GRANTED*/){
             //All Permission is granted
             return true;
         }else{
             //All Permission is not granted
-            final DialogMaker whyNeedPermissionExplain=new DialogMaker();
+            final DialogMaker explainWhyNeedPermission=new DialogMaker();
             final Activity thisActivty=this;
             DialogMaker.Callback ok=new DialogMaker.Callback() {
                 @Override
@@ -88,8 +76,9 @@ public class MainActivity extends AppCompatActivity {
                     String requestPermissionList[]=new String[]
                             {Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_EXTERNAL_STORAGE,
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+                    //getSettingWritePermission();
                     ActivityCompat.requestPermissions(thisActivty, requestPermissionList, PERMISSION_REQUEST_CODE);
-                    whyNeedPermissionExplain.dismiss();
+                    explainWhyNeedPermission.dismiss();
                 }
             };
             DialogMaker.Callback appClose=new DialogMaker.Callback() {
@@ -98,9 +87,17 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 }
             };
-            whyNeedPermissionExplain.setValue("다음 권한이 필요합니다.", "알겠습니다", "앱 종료", ok, appClose);
-            whyNeedPermissionExplain.show(getSupportFragmentManager(), "");
+            explainWhyNeedPermission.setValue("다음 권한이 필요합니다.", "알겠습니다", "앱 종료", ok, appClose);
+            explainWhyNeedPermission.show(getSupportFragmentManager(), "");
             return false;
+        }
+    }
+    public void getSettingWritePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!android.provider.Settings.System.canWrite(getApplicationContext())) {
+                Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:" + getPackageName()));
+                startActivityForResult(intent, SETTINGS_PERMISSION_REQUEST_CODE);
+            }
         }
     }
 
@@ -181,19 +178,16 @@ public class MainActivity extends AppCompatActivity {
                     firebaseAuthWithGoogle(result.getSignInAccount());
                     settings.setLoginType(settings.loginType_google);
 
-
                     getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new MainPageFragment()).commit();
                 }else{
-                    final DialogMaker failToLogin=new DialogMaker();
-                    DialogMaker.Callback ok=new DialogMaker.Callback() {
-                        @Override
-                        public void callbackMethod() {
-                            failToLogin.dismiss();
-                        }
-                    };
-                    failToLogin.setValue("로그인에 실패하였습니다. 다시 시도하세요.", "확인", "", ok, null);
-                    failToLogin.show(getSupportFragmentManager(), "Fail to Login");
-                }
+                    Toast.makeText(getApplicationContext(),"로그인 실패. 다시 시도하세요.", Toast.LENGTH_SHORT).show();
+
+                    if(mGoogleApiClient!=null && mGoogleApiClient.isConnected()){
+                        mGoogleApiClient.stopAutoManage(this);
+                        mGoogleApiClient.disconnect();
+                    }
+
+                  }
                 break;
 
             case LOGIN_FACEBOOK:
@@ -205,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         if(mGoogleApiClient!=null && mGoogleApiClient.isConnected()){
-            mGoogleApiClient.stopAutoManage((FragmentActivity) getApplicationContext());
+            mGoogleApiClient.stopAutoManage(this);
             mGoogleApiClient.disconnect();
         }
         super.onDestroy();
@@ -226,6 +220,19 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Firebase Auth", "firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        firebaseAuth=FirebaseAuth.getInstance();
+        firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser()!=null){
+                    //User is login
+                    settings.setIsFirst(false);
+                }else{
+                    //User is logout
+                    settings.setIsFirst(true);
+                }
+            }
+        });
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -237,9 +244,18 @@ public class MainActivity extends AppCompatActivity {
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Log.w("Firebase Auth", "signInWithCredential", task.getException());
-                            Toast.makeText(getApplicationContext(), "인증 실패. 다시 시도하세요.",Toast.LENGTH_SHORT).show();
+                            finish();
+                            Toast.makeText(getApplicationContext(), "인증 실패. 앱을 종료합니다.",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(mGoogleApiClient!=null){
+            mGoogleApiClient.connect();
+        }
     }
 }
