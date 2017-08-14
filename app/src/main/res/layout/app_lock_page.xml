@@ -155,13 +155,21 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                        <ImageButton
-                            android:id="@+id/zero"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:layout_centerInParent="true"
-                            android:layout_margin="15dp"
-                            android:background="@drawable/zero" />
+                    <ImageButton
+                        android:id="@+id/zero"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="15dp"
+                        android:background="@drawable/zero" />
+
+                    <ImageButton
+                        android:id="@+id/delete"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_margin="15dp"
+                        android:layout_toRightOf="@+id/zero"
+                        android:background="@drawable/x" />
                 </RelativeLayout>
             </LinearLayout>
         </ScrollView>

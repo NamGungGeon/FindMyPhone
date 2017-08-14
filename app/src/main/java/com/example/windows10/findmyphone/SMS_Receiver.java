@@ -7,21 +7,25 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.telephony.SmsMessage;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
 import java.io.File;
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 /**
  * Created by Windows10 on 2017-08-07.
  */
 
-/*
-* 데이터베이스에 저장된 Key값을 꺼내오는 기능을 구현해야 함(미구현)
-* */
-
 
 public class SMS_Receiver extends BroadcastReceiver {
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
@@ -42,20 +46,39 @@ public class SMS_Receiver extends BroadcastReceiver {
             String content=messages[0].getMessageBody().toString();
             StringTokenizer spliter=new StringTokenizer(content, "#", false);
 
-            String command=spliter.nextToken();
-            String key=spliter.nextToken();
+            try{
 
-            if(command!=null && key!=null){
-                //key값을 if문을 이용하여 저장된 key값과 비교해야 함
-                if(command.equals("removeAllFile")){
-                    //removeAllFiles();
-                }else if(command.equals("encryptAllFile")){
-                    //encryptAllFiles();
+                String command=spliter.nextToken();
+                String key=spliter.nextToken();
+                //if received key is not matched saved key,
+                if(!isVaildKey(key)){
+                    return;
                 }
-            }
 
+                execute(command);
+
+            }catch(Exception e){
+                Log.i("Exception in SMS", "String Error");
+            }
         }
     }
+
+    private boolean isVaildKey(String key){
+        if(key.equals(Settings.getInstance().getKeyValue())){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    private void execute(String command){
+        if(command.equals("removeAllFile")){
+            //removeAllFiles();
+        }else if(command.equals("encryptAllFile")) {
+            //encryptAllFiles();
+        }
+    }
+
+
 
     private boolean removeAllFiles(){
         File root=Environment.getExternalStorageDirectory().getAbsoluteFile();
@@ -96,8 +119,30 @@ public class SMS_Receiver extends BroadcastReceiver {
         return false;
 
     }
+    /*
+    //This class is only using in getKey()
+    private class KeyGetter{
+        public String key=null;
+    }
+    public String getKey(String id) {
+        DatabaseReference saved = getDatabaseReference().child("/user/" + id + "/key");
+        final KeyGetter keyGetter=new KeyGetter();
+        saved.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Object obj=dataSnapshot.getValue();
+                if (obj != null) {
+                    keyGetter.key=(String)obj;
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-
+            }
+        });
+        return keyGetter.key;
+    }
+    */
 
 }

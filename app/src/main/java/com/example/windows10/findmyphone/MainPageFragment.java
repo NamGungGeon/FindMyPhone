@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -37,6 +38,9 @@ public class MainPageFragment extends Fragment implements Serializable{
                 case R.id.settingBtn:
                     Intent intent=new Intent(getActivity().getApplicationContext(), SettingActivity.class);
                     startActivity(intent);
+                    break;
+                case R.id.helpBtn:
+                    Toast.makeText(getActivity().getApplicationContext(), Settings.getInstance().getKeyValue(), Toast.LENGTH_SHORT).show();
                     break;
             }
         }

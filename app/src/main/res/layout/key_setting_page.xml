@@ -80,9 +80,9 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_weight="6"
+        android:orientation="vertical"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:orientation="vertical">
+        android:paddingRight="10dp">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -91,7 +91,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -167,11 +167,11 @@
                         android:id="@+id/eightK"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:background="@drawable/eight"
+                        android:layout_alignTop="@+id/seven"
+                        android:layout_centerInParent="true"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
-                        android:layout_alignTop="@+id/seven"
-                        android:layout_centerHorizontal="true" />
+                        android:background="@drawable/eight" />
 
                     <ImageButton
                         android:id="@+id/nineK"
@@ -181,9 +181,11 @@
                         android:layout_toRightOf="@+id/eightK"
                         android:background="@drawable/nine" />
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <ImageButton
                         android:id="@+id/zeroK"
                         android:layout_width="80dp"
@@ -191,6 +193,14 @@
                         android:layout_centerInParent="true"
                         android:layout_margin="15dp"
                         android:background="@drawable/zero" />
+
+                    <ImageButton
+                        android:id="@+id/deleteK"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_margin="15dp"
+                        android:layout_toRightOf="@+id/zeroK"
+                        android:background="@drawable/x" />
                 </RelativeLayout>
             </LinearLayout>
         </ScrollView>

@@ -24,6 +24,7 @@ public class AppLockerFragment extends Fragment {
     final private TextView pinStatus[]=new TextView[4];
     private ImageButton pinNumberBtn[]=new ImageButton[9];
     private ImageButton zeroPinNumberBtn=null;
+    private ImageButton deletePinBtn=null;
 
     private int PIN_errorStack=0;
 
@@ -66,6 +67,17 @@ public class AppLockerFragment extends Fragment {
                 }
             });
         }
+
+        deletePinBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(inputPIN.length()-1>0){
+                    pinStatus[inputPIN.length()-1].setText("_");
+                    inputPIN=inputPIN.substring(0, inputPIN.length()-2);
+                }
+            }
+        });
+
         return rootView;
     }
 

@@ -27,6 +27,14 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private final int PERMISSION_REQUEST_CODE=1234;
@@ -61,9 +69,7 @@ public class MainActivity extends AppCompatActivity {
         if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECEIVE_SMS)==PackageManager.PERMISSION_GRANTED/*
-                && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_SETTINGS)==PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_SECURE_SETTINGS)==PackageManager.PERMISSION_GRANTED*/){
+                && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECEIVE_SMS)==PackageManager.PERMISSION_GRANTED){
             //All Permission is granted
             return true;
         }else{
@@ -88,16 +94,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
             explainWhyNeedPermission.setValue("다음 권한이 필요합니다.", "알겠습니다", "앱 종료", ok, appClose);
+            explainWhyNeedPermission.setCancelable(false);
             explainWhyNeedPermission.show(getSupportFragmentManager(), "");
             return false;
-        }
-    }
-    public void getSettingWritePermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!android.provider.Settings.System.canWrite(getApplicationContext())) {
-                Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:" + getPackageName()));
-                startActivityForResult(intent, SETTINGS_PERMISSION_REQUEST_CODE);
-            }
         }
     }
 
@@ -133,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
     private long time=0;
     @Override
     public void onBackPressed() {
-        if(System.currentTimeMillis()-time<3000L){
+        if(System.currentTimeMillis()-time>3000L){
             time=System.currentTimeMillis();
             Toast.makeText(getApplicationContext(), "'뒤로'버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT).show();
         }else{
@@ -177,8 +176,11 @@ public class MainActivity extends AppCompatActivity {
                 if(result.isSuccess()){
                     firebaseAuthWithGoogle(result.getSignInAccount());
                     settings.setLoginType(settings.loginType_google);
-
-                    getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new MainPageFragment()).commit();
+                    if(!isExistKeyValue(result.getSignInAccount().getId())){
+                        registerKeyValue();
+                    }else{
+                        getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new MainPageFragment()).commit();
+                    }
                 }else{
                     Toast.makeText(getApplicationContext(),"로그인 실패. 다시 시도하세요.", Toast.LENGTH_SHORT).show();
 
@@ -206,13 +208,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void registerKeyValue(){
-        DialogMaker maker=new DialogMaker();
+        final DialogMaker maker=new DialogMaker();
         maker.setValue("Key값을 등록합니다.", "등록", "", new DialogMaker.Callback() {
             @Override
             public void callbackMethod() {
-                getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new KeySettingFragment());
+                getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new KeySettingFragment()).commit();
+                maker.dismiss();
             }
-        }, null);
+        }, null, getLayoutInflater().inflate(R.layout.key_setting_explain, null));
+        maker.setCancelable(false);
         maker.show(getSupportFragmentManager(), "");
     }
 
@@ -257,5 +261,35 @@ public class MainActivity extends AppCompatActivity {
         if(mGoogleApiClient!=null){
             mGoogleApiClient.connect();
         }
+    }
+
+    private DatabaseReference getDatabaseReference(){
+        return FirebaseDatabase.getInstance().getReference();
+    }
+
+    public boolean isExistKeyValue(String id){
+        DatabaseReference saved=getDatabaseReference().child("/user/"+ id+"/key");
+        final Checker checker=new Checker();
+        saved.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue()!=null){
+                    checker.check=true;
+                }else{
+                    checker.check=false;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return checker.check;
+    }
+    //This class is only used in isExistKeyValue().
+    private class Checker{
+        boolean check=false;
     }
 }

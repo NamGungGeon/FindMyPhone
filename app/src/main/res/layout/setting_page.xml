@@ -66,12 +66,34 @@
                     android:id="@+id/changeKey"
                     android:background="@drawable/key_change"/>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_centerHorizontal="true"
+                android:id="@+id/settingWrapper_3"
                 android:layout_below="@+id/settingWrapper_2">
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="15dp"
+                    android:id="@+id/functionManage"
+                    android:background="@drawable/function"/>
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="15dp"
+                    android:id="@+id/devInfo"
+                    android:background="@drawable/dev_info"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/settingWrapper_3">
                 <Button
                     android:layout_width="150dp"
                     android:layout_height="150dp"
@@ -82,8 +104,8 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_margin="15dp"
-                    android:id="@+id/devInfo"
-                    android:background="@drawable/dev_info"/>
+                    android:id="@+id/donation"
+                    android:background="@drawable/donation"/>
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>
