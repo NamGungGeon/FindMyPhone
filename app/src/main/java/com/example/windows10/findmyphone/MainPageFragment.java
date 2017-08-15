@@ -30,6 +30,9 @@ public class MainPageFragment extends Fragment implements Serializable{
     private Button settingBtn=null;
     private Button helpBtn=null;
 
+    private Settings settings=Settings.getInstance();
+    private final int OPEN_SETTING_ACTIVITY=10003;
+
     @NonNull
     private View.OnClickListener onClickListener=new View.OnClickListener() {
         @Override
@@ -37,20 +40,42 @@ public class MainPageFragment extends Fragment implements Serializable{
             switch(view.getId()){
                 case R.id.settingBtn:
                     Intent intent=new Intent(getActivity().getApplicationContext(), SettingActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, OPEN_SETTING_ACTIVITY);
                     break;
                 case R.id.helpBtn:
-                    Toast.makeText(getActivity().getApplicationContext(), Settings.getInstance().getKeyValue(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "Test Code", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
     };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case OPEN_SETTING_ACTIVITY:
+                appStatusCheck();
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView=(ViewGroup)inflater.inflate(R.layout.main_page, container, false);
 
+        init(rootView);
+        appStatusCheck();
+
+        //Intent checkAppStatusThread=new Intent(getActivity().getApplicationContext(), CheckAppStatusInBackground.class);
+        //checkAppStatusThread.putExtras((new Intent()).putExtra("Status", this));
+        //getActivity().startService(checkAppStatusThread);
+
+        return rootView;
+    }
+
+    private void init(ViewGroup rootView){
         appStatusIcon=(ImageView)rootView.findViewById(R.id.appStatusIcon);
         appStatus=(TextView)rootView.findViewById(R.id.appStatus);
         userName=(TextView)rootView.findViewById(R.id.userName);
@@ -63,24 +88,44 @@ public class MainPageFragment extends Fragment implements Serializable{
         helpBtn=(Button)rootView.findViewById(R.id.helpBtn);
         helpBtn.setOnClickListener(onClickListener);
 
-        appStatusCheck(rootView);
-
-        Intent checkAppStatusThread=new Intent(getActivity().getApplicationContext(), CheckAppStatusInBackground.class);
-        //checkAppStatusThread.putExtras((new Intent()).putExtra("Status", this));
-        //getActivity().startService(checkAppStatusThread);
-
-        return rootView;
     }
 
-    private void appStatusCheck(ViewGroup rootView){
-        if(true){
+
+    private void appStatusCheck(){
+        boolean isFine=true;
+        String message="";
+
+        if(!settings.getIsLockThisApp()){
+            isFine=false;
+            message=message.concat("앱 잠금이 설정되어 있지 않습니다.\n");
+        }
+        if(settings.getKeyValue().equals(settings.keyNotExist)){
+            isFine=false;
+            message=message.concat("키 값이 설정되지 않았습니다.\n");
+        }
+        if(settings.getReceiveStatus()==false){
+            isFine=false;
+            message=message.concat("앱 알림이 꺼져 있습니다.\n");
+        }
+        if(getGpsStatus()==false){
+            isFine=false;
+            message=message.concat("GPS기능이 꺼져 있습니다.\n");
+        }
+
+        if(isFine){
             //When App status is fine
             appStatusIcon.setImageResource(R.drawable.main_icon);
             appStatus.setText("앱이 정상 작동 중입니다");
         }else{
             //When App can't be running (because something is wrong)
             appStatusIcon.setImageResource(R.drawable.blocking);
-            appStatus.setText("앱이 정상적으로 작동하지 않고 있습니다");
+            appStatus.setText(message);
         }
+    }
+
+    private boolean getGpsStatus(){
+        String provider = android.provider.Settings.Secure
+                .getString(getActivity().getContentResolver(), android.provider.Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+        return provider.contains("gps");
     }
 }

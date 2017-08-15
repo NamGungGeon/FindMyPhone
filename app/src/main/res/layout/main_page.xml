@@ -45,6 +45,7 @@
         android:layout_centerVertical="true"
         android:layout_below="@+id/userName"
         android:layout_marginTop="20dp"
+        android:textAlignment="center"
         android:id="@+id/appStatus"/>
     <LinearLayout
         android:layout_width="wrap_content"

@@ -15,15 +15,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
-/*
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-*/
+
 /**
- * Created by WINDOWS7 on 2017-08-11.
+ * Created by WINDOWS7 on 2017-08-16.
  */
 
-public class KeySettingFragment extends Fragment {
+public class KeyResettingFragment extends Fragment {
 
     private String inputKey="";
     private String oneMoreCheck="";
@@ -150,9 +147,9 @@ public class KeySettingFragment extends Fragment {
         deleteKeyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(oneMoreCheck.length()-1>0){
+                if(oneMoreCheck.length()-1>=0){
                     keyStatus[oneMoreCheck.length()-1].setText("_");
-                    oneMoreCheck=oneMoreCheck.substring(0, oneMoreCheck.length()-2);
+                    oneMoreCheck=oneMoreCheck.substring(0, oneMoreCheck.length()-1);
                 }
             }
         });
@@ -163,8 +160,8 @@ public class KeySettingFragment extends Fragment {
             if(oneMoreCheck.equals(inputKey)){
                 writeKeyValue(oneMoreCheck);
                 Settings.getInstance().setKeyValue(oneMoreCheck);
-                Toast.makeText(getActivity().getApplicationContext(), "키 설정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new MainPageFragment()).commit();
+                Toast.makeText(getActivity().getApplicationContext(), "키 재설정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.settingActivityContainer, new MainSettingFragment()).commit();
             }else{
                 initListener();
                 oneMoreCheck="";
@@ -204,3 +201,5 @@ public class KeySettingFragment extends Fragment {
     }
 
 }
+
+

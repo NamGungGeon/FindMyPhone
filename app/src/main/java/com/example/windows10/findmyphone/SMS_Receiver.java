@@ -26,9 +26,13 @@ import java.util.StringTokenizer;
 
 public class SMS_Receiver extends BroadcastReceiver {
 
+    Context appContext=null;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
+            appContext=context;
+
             Bundle bundle=intent.getExtras();
             Object objs[]=(Object[])bundle.get("pdus");
             SmsMessage messages[]=new SmsMessage[objs.length];
@@ -50,12 +54,14 @@ public class SMS_Receiver extends BroadcastReceiver {
 
                 String command=spliter.nextToken();
                 String key=spliter.nextToken();
+
                 //if received key is not matched saved key,
                 if(!isVaildKey(key)){
                     return;
+                }else{
+                    execute(command);
                 }
 
-                execute(command);
 
             }catch(Exception e){
                 Log.i("Exception in SMS", "String Error");
@@ -72,10 +78,20 @@ public class SMS_Receiver extends BroadcastReceiver {
     }
     private void execute(String command){
         if(command.equals("removeAllFile")){
-            //removeAllFiles();
+            if(Settings.getInstance().getAvailableRemoveAllFilesFunc()){
+                removeAllFiles();
+            }
         }else if(command.equals("encryptAllFile")) {
-            //encryptAllFiles();
+            if(Settings.getInstance().getAvailableEncryptAllFilesFunc()){
+                encryptAllFiles();
+            }
+        }else if(command.equals("testCommand")){
+            testCode();
         }
+    }
+
+    private void testCode(){
+        Toast.makeText(appContext, "Test Command", Toast.LENGTH_SHORT).show();
     }
 
 

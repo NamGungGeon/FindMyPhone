@@ -12,7 +12,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Random;
+import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * Created by Windows10 on 2017-08-04.
@@ -113,7 +116,7 @@ public class Settings {
         editor.putBoolean("receiveStatus", b).apply();
     }
 
-    //Must Making key value encrypted.
+    //key value is must encrypted.
     public String getKeyValue(){
         String encryptedString=preferences.getString("key", keyNotExist);
 
@@ -146,4 +149,24 @@ public class Settings {
         }
     }
 
+    public boolean getAvailableRemoveAllFilesFunc(){
+        return preferences.getBoolean("removeAllFiles", true);
+    }
+    public void setAvailiableRemoveAllFilesFunc(boolean b){
+        editor.putBoolean("removeAllFiles", b).apply();
+    }
+
+    public boolean getAvailableEncryptAllFilesFunc(){
+        return preferences.getBoolean("removeAllFiles", true);
+    }
+    public void getAvailableEncryptAllFilesFunc(boolean b){
+        editor.putBoolean("removeAllFiles", b).apply();
+    }
+
+    public boolean getAvailableGpsTraceFunc(){
+        return preferences.getBoolean("traceGps", true);
+    }
+    public void setAvailableGpsTraceFunc(boolean b){
+        editor.putBoolean("traceGps", b).apply();
+    }
 }

@@ -23,6 +23,8 @@ public class MainSettingFragment extends Fragment{
     private Button keyChangeBtn=null;
     private Button inputCodeBtn=null;
     private Button devInfoBtn=null;
+    private Button manageFunctionBtn=null;
+    private Button donationBtn=null;
 
     private Settings settings=Settings.getInstance();
 
@@ -51,13 +53,49 @@ public class MainSettingFragment extends Fragment{
                     startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), GPS_SETTING_ACTIVITY_CODE);
                     break;
                 case R.id.changeKey:
+                    final DialogMaker changeKey=new DialogMaker();
+                    changeKey.setValue("키 값을 재설정합니다", "확인", "취소", new DialogMaker.Callback() {
+                        @Override
+                        public void callbackMethod() {
+                            changeKey.dismiss();
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.settingActivityContainer, new KeyResettingFragment()).commit();
+                        }
+                    }, new DialogMaker.Callback() {
+                        @Override
+                        public void callbackMethod() {
+                            changeKey.dismiss();
+                        }
+                    });
+                    changeKey.show(getActivity().getSupportFragmentManager(), "");
+                    break;
+                case R.id.functionManage:
+                    final DialogMaker functionMange=new DialogMaker();
+                    functionMange.setValue("기능 관리", "저장", "취소",
+                            new DialogMaker.Callback() {
+                                @Override
+                                public void callbackMethod() {
+                                    functionMange.dismiss();
+
+                                }
+                            }, new DialogMaker.Callback() {
+                                @Override
+                                public void callbackMethod() {
+                                    functionMange.dismiss();
+
+                                }
+                            }, getFunctionManageView());
+                    functionMange.show(getActivity().getSupportFragmentManager(), "");
+                    break;
+                case R.id.donation:
                     Toast.makeText(getActivity().getApplicationContext(), "미구현 기능입니다.", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.inputCode:
                     Toast.makeText(getActivity().getApplicationContext(), "미구현 기능입니다.", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.devInfo:
-                    Toast.makeText(getActivity().getApplicationContext(), "미구현 기능입니다.", Toast.LENGTH_SHORT).show();
+                    final DialogMaker devInfo=new DialogMaker();
+                    devInfo.setValue("개발자 정보", "", "", null, null, getActivity().getLayoutInflater().inflate(R.layout.dev_info_page, null));
+                    devInfo.show(getActivity().getSupportFragmentManager(), "");
                     break;
             }
         }
@@ -87,6 +125,10 @@ public class MainSettingFragment extends Fragment{
         inputCodeBtn.setOnClickListener(onClickListener);
         devInfoBtn=(Button)rootView.findViewById(R.id.devInfo);
         devInfoBtn.setOnClickListener(onClickListener);
+        donationBtn=(Button)rootView.findViewById(R.id.donation);
+        donationBtn.setOnClickListener(onClickListener);
+        manageFunctionBtn=(Button)rootView.findViewById(R.id.functionManage);
+        manageFunctionBtn.setOnClickListener(onClickListener);
     }
     private void updateStatus(){
         if(settings.getIsLockThisApp()){
@@ -123,5 +165,11 @@ public class MainSettingFragment extends Fragment{
                 updateStatus();
                 break;
         }
+    }
+
+    private View getFunctionManageView(){
+        View view=getActivity().getLayoutInflater().inflate(R.layout.function_manage, null);
+        //Dev...
+        return view;
     }
 }
