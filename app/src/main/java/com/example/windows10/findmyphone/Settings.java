@@ -2,20 +2,9 @@ package com.example.windows10.findmyphone;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.Random;
-import java.util.Set;
-import java.util.SortedSet;
 
 /**
  * Created by Windows10 on 2017-08-04.
@@ -110,7 +99,7 @@ public class Settings {
         }
     }
     public boolean getReceiveStatus(){
-        return preferences.getBoolean("receiveStatus", false);
+        return preferences.getBoolean("receiveStatus", true);
     }
     public void setReceiveStatus(boolean b){
         editor.putBoolean("receiveStatus", b).apply();
@@ -152,15 +141,15 @@ public class Settings {
     public boolean getAvailableRemoveAllFilesFunc(){
         return preferences.getBoolean("removeAllFiles", true);
     }
-    public void setAvailiableRemoveAllFilesFunc(boolean b){
+    public void setAvailableRemoveAllFilesFunc(boolean b){
         editor.putBoolean("removeAllFiles", b).apply();
     }
 
     public boolean getAvailableEncryptAllFilesFunc(){
-        return preferences.getBoolean("removeAllFiles", true);
+        return preferences.getBoolean("encryptAllFiles", true);
     }
-    public void getAvailableEncryptAllFilesFunc(boolean b){
-        editor.putBoolean("removeAllFiles", b).apply();
+    public void setAvailableEncryptAllFilesFunc(boolean b){
+        editor.putBoolean("encryptAllFiles", b).apply();
     }
 
     public boolean getAvailableGpsTraceFunc(){
@@ -169,4 +158,18 @@ public class Settings {
     public void setAvailableGpsTraceFunc(boolean b){
         editor.putBoolean("traceGps", b).apply();
     }
+
+    public boolean getAvailableCameraFunc(){
+        return preferences.getBoolean("camera", true);
+    }
+    public void setAvailableCameraFunc(boolean b){
+        editor.putBoolean("camera", b).apply();
+    }
+    public boolean getAvailablePhoneLock(){
+        return preferences.getBoolean("phoneLock", true);
+    }
+    public void setAvailablePhoneLock(boolean b){
+        editor.putBoolean("phoneLock", b).apply();
+    }
+
 }

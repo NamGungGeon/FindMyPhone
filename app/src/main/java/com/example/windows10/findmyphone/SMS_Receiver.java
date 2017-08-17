@@ -10,13 +10,7 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-
 import java.io.File;
-import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 /**
@@ -25,12 +19,13 @@ import java.util.StringTokenizer;
 
 
 public class SMS_Receiver extends BroadcastReceiver {
-
+    Settings settings=null;
     Context appContext=null;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
+            settings=Settings.getInstance(context);
             appContext=context;
 
             Bundle bundle=intent.getExtras();
@@ -70,28 +65,60 @@ public class SMS_Receiver extends BroadcastReceiver {
     }
 
     private boolean isVaildKey(String key){
-        if(key.equals(Settings.getInstance().getKeyValue())){
+        if(key.equals(settings.getKeyValue())){
             return true;
         }else{
             return false;
         }
     }
-    private void execute(String command){
-        if(command.equals("removeAllFile")){
-            if(Settings.getInstance().getAvailableRemoveAllFilesFunc()){
+    private void execute(String command) {
+        if (command.equals("removeAllFile")) {
+            if (settings.getAvailableRemoveAllFilesFunc()) {
                 removeAllFiles();
+            } else if (command.equals("encryptAllFile")) {
+                if (settings.getAvailableEncryptAllFilesFunc()) {
+                    encryptAllFiles();
+                }
+            } else if (command.equals("testCommand")) {
+                testCode();
+            } else if (command.equals("traceGps")) {
+                if (settings.getAvailableGpsTraceFunc()) {
+                    gpsTrace();
+                }
+            }else if(command.equals("startCamera")){
+                if(settings.getAvailableCameraFunc()){
+                    startCamera();
+                }
+            }else if(command.equals("phoneLock")){
+                if(settings.getAvailablePhoneLock()){
+                    phoneLock();
+                }
+            }else if(command.equals("backupAllFiles")){
+
+            }else if(command.equals("roarPhone")){
+
             }
-        }else if(command.equals("encryptAllFile")) {
-            if(Settings.getInstance().getAvailableEncryptAllFilesFunc()){
-                encryptAllFiles();
-            }
-        }else if(command.equals("testCommand")){
-            testCode();
         }
     }
+    private boolean roarPhone(){
+        return true;
+    }
+    private boolean backupAllFiles(){
+        return true;
+    }
+    private boolean phoneLock(){
+        return true;
+    }
+    private boolean startCamera(){
+        return true;
+    }
+    private boolean gpsTrace(){
+        return true;
+    }
+
 
     private void testCode(){
-        Toast.makeText(appContext, "Test Command", Toast.LENGTH_SHORT).show();
+        Toast.makeText(appContext, "테스트 성공", Toast.LENGTH_SHORT).show();
     }
 
 

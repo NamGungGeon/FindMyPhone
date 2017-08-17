@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 /**
@@ -37,7 +39,22 @@ public class MainSettingFragment extends Fragment{
                     if(settings.getIsLockThisApp()){
                         //Make app unlocked
                     }else{
-                        //Make app locked\
+                        final DialogMaker appLock=new DialogMaker();
+                        appLock.setValue("앱 잠금을 설정합니다.", "확인", "취소",
+                                new DialogMaker.Callback() {
+                                    @Override
+                                    public void callbackMethod() {
+                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.settingActivityContainer, new AppLockerFragment()).commit();
+                                        appLock.dismiss();
+                                    }
+                                }
+                                , new DialogMaker.Callback() {
+                                    @Override
+                                    public void callbackMethod() {
+                                        appLock.dismiss();
+                                    }
+                                });
+                        appLock.show(getActivity().getSupportFragmentManager(), "");
                     }
                     break;
                 case R.id.receiveInfo:
@@ -58,7 +75,8 @@ public class MainSettingFragment extends Fragment{
                         @Override
                         public void callbackMethod() {
                             changeKey.dismiss();
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.settingActivityContainer, new KeyResettingFragment()).commit();
+                            getActivity().getSupportFragmentManager()
+                                    .beginTransaction().replace(R.id.settingActivityContainer, new KeyResettingFragment()).commit();
                         }
                     }, new DialogMaker.Callback() {
                         @Override
@@ -70,20 +88,14 @@ public class MainSettingFragment extends Fragment{
                     break;
                 case R.id.functionManage:
                     final DialogMaker functionMange=new DialogMaker();
-                    functionMange.setValue("기능 관리", "저장", "취소",
+                    functionMange.setValue("기능 관리", "닫기", "",
                             new DialogMaker.Callback() {
                                 @Override
                                 public void callbackMethod() {
                                     functionMange.dismiss();
 
                                 }
-                            }, new DialogMaker.Callback() {
-                                @Override
-                                public void callbackMethod() {
-                                    functionMange.dismiss();
-
-                                }
-                            }, getFunctionManageView());
+                            }, null, getFunctionManageView());
                     functionMange.show(getActivity().getSupportFragmentManager(), "");
                     break;
                 case R.id.donation:
@@ -169,7 +181,97 @@ public class MainSettingFragment extends Fragment{
 
     private View getFunctionManageView(){
         View view=getActivity().getLayoutInflater().inflate(R.layout.function_manage, null);
-        //Dev...
+
+
+        RelativeLayout removeAllWrapper= (RelativeLayout) view.findViewById(R.id.removeAllWrapper);
+        final CheckBox enableRemoveAll=(CheckBox)view.findViewById(R.id.useRemoveAllFilesFunctionBtn);
+        enableRemoveAll.setChecked(settings.getAvailableRemoveAllFilesFunc());
+
+        RelativeLayout encryptWrapper=(RelativeLayout)view.findViewById(R.id.encryptAllWrapper);
+        final CheckBox enableEncryptAll=(CheckBox)view.findViewById(R.id.useEncryptAllFilesFunctionBtn);
+        enableEncryptAll.setChecked(settings.getAvailableEncryptAllFilesFunc());
+
+        RelativeLayout gpsTraceWrapper=(RelativeLayout)view.findViewById(R.id.gpsTraceWrapper);
+        final CheckBox enableGpsTrace=(CheckBox)view.findViewById(R.id.useGpsTraceFunction);
+        enableGpsTrace.setChecked(settings.getAvailableGpsTraceFunc());
+
+        RelativeLayout cameraWrapper=(RelativeLayout)view.findViewById(R.id.cameraWrapper);
+        final CheckBox enableCamera=(CheckBox)view.findViewById(R.id.useCameraFunction);
+        enableCamera.setChecked(settings.getAvailableCameraFunc());
+
+        RelativeLayout phoneLockWrapper=(RelativeLayout)view.findViewById(R.id.phoneLockWrapper);
+        final CheckBox enablePhoneLock=(CheckBox)view.findViewById(R.id.usePhoneLockFunction);
+        enablePhoneLock.setChecked(settings.getAvailablePhoneLock());
+
+        View.OnClickListener listener=new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()){
+                    case R.id.useRemoveAllFilesFunctionBtn:
+                    case R.id.removeAllWrapper:
+                        if(settings.getAvailableRemoveAllFilesFunc()){
+                            settings.setAvailableRemoveAllFilesFunc(false);
+                            enableRemoveAll.setChecked(false);
+                        }else{
+                            settings.setAvailableRemoveAllFilesFunc(true);
+                            enableRemoveAll.setChecked(true);
+                        }
+                        break;
+                    case R.id.useEncryptAllFilesFunctionBtn:
+                    case R.id.encryptAllWrapper:
+                        if(settings.getAvailableEncryptAllFilesFunc()){
+                            settings.setAvailableEncryptAllFilesFunc(false);
+                            enableEncryptAll.setChecked(false);
+                        }else{
+                            settings.setAvailableEncryptAllFilesFunc(true);
+                            enableEncryptAll.setChecked(true);
+                        }
+                        break;
+                    case R.id.useGpsTraceFunction:
+                    case R.id.gpsTraceWrapper:
+                        if(settings.getAvailableGpsTraceFunc()){
+                            settings.setAvailableGpsTraceFunc(false);
+                            enableGpsTrace.setChecked(false);
+                        }else{
+                            settings.setAvailableGpsTraceFunc(true);
+                            enableGpsTrace.setChecked(true);
+                        }
+                        break;
+                    case R.id.useCameraFunction:
+                    case R.id.cameraWrapper:
+                        if(settings.getAvailableCameraFunc()){
+                            settings.setAvailableCameraFunc(false);
+                            enableCamera.setChecked(false);
+                        }else{
+                            settings.setAvailableCameraFunc(true);
+                            enableCamera.setChecked(true);
+                        }
+                        break;
+                    case R.id.usePhoneLockFunction:
+                    case R.id.phoneLockWrapper:
+                        if(settings.getAvailablePhoneLock()){
+                            settings.setAvailablePhoneLock(false);
+                            enablePhoneLock.setChecked(false);
+                        }else{
+                            settings.setAvailablePhoneLock(true);
+                            enablePhoneLock.setChecked(true);
+                        }
+                        break;
+                    case R.id.uploadAllWrapper:
+
+                        break;
+                    case R.id.loudSoundWrapper:
+
+                        break;
+                }
+            }
+        };
+
+        removeAllWrapper.setOnClickListener(listener);
+        encryptWrapper.setOnClickListener(listener);
+        gpsTraceWrapper.setOnClickListener(listener);
+        cameraWrapper.setOnClickListener(listener);
+        phoneLockWrapper.setOnClickListener(listener);
         return view;
     }
 }

@@ -17,7 +17,7 @@
             android:layout_centerVertical="true"
             android:textSize="25dp"
             android:textColor="#FFFFFF"
-            android:text="앱 잠금"/>
+            android:text="앱 잠금 설정"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -35,28 +35,28 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="25dp"
                 android:textSize="25dp"
-                android:id="@+id/firstPIN"
+                android:id="@+id/firstPINS"
                 android:text="_"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="25dp"
                 android:textSize="25dp"
-                android:id="@+id/secondPIN"
+                android:id="@+id/secondPINS"
                 android:text="_"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="25dp"
                 android:textSize="25dp"
-                android:id="@+id/thirdPIN"
+                android:id="@+id/thirdPINS"
                 android:text="_"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="25dp"
                 android:textSize="25dp"
-                android:id="@+id/forthPIN"
+                android:id="@+id/forthPINS"
                 android:text="_"/>
         </LinearLayout>
     </RelativeLayout>
@@ -82,15 +82,15 @@
                     android:layout_height="match_parent">
 
                     <ImageButton
-                        android:id="@+id/one"
+                        android:id="@+id/oneS"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_margin="15dp"
-                        android:layout_toLeftOf="@+id/two"
+                        android:layout_toLeftOf="@+id/twoS"
                         android:background="@drawable/one" />
 
                     <ImageButton
-                        android:id="@+id/two"
+                        android:id="@+id/twoS"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_centerInParent="true"
@@ -98,11 +98,11 @@
                         android:background="@drawable/two" />
 
                     <ImageButton
-                        android:id="@+id/three"
+                        android:id="@+id/threeS"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_margin="15dp"
-                        android:layout_toRightOf="@+id/two"
+                        android:layout_toRightOf="@+id/twoS"
                         android:background="@drawable/three" />
                 </RelativeLayout>
 
@@ -111,15 +111,15 @@
                     android:layout_height="match_parent">
 
                     <ImageButton
-                        android:id="@+id/four"
+                        android:id="@+id/fourS"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_margin="15dp"
-                        android:layout_toLeftOf="@+id/five"
+                        android:layout_toLeftOf="@+id/fiveS"
                         android:background="@drawable/four" />
 
                     <ImageButton
-                        android:id="@+id/five"
+                        android:id="@+id/fiveS"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_centerInParent="true"
@@ -127,49 +127,49 @@
                         android:background="@drawable/five" />
 
                     <ImageButton
-                        android:id="@+id/six"
+                        android:id="@+id/sixS"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_margin="15dp"
-                        android:layout_toRightOf="@+id/five"
+                        android:layout_toRightOf="@+id/fiveS"
                         android:background="@drawable/six" />
                 </RelativeLayout>
 
                 <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <ImageButton
-                    android:id="@+id/seven"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_margin="15dp"
-                    android:layout_toLeftOf="@+id/eight"
-                    android:background="@drawable/seven" />
+                    <ImageButton
+                        android:id="@+id/sevenS"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_margin="15dp"
+                        android:layout_toLeftOf="@+id/eightS"
+                        android:background="@drawable/seven" />
 
-                <ImageButton
-                    android:id="@+id/eight"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/eight"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_alignTop="@+id/seven"
-                    android:layout_centerHorizontal="true" />
+                    <ImageButton
+                        android:id="@+id/eightS"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@drawable/eight"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true" />
 
-                <ImageButton
-                    android:id="@+id/nine"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_margin="15dp"
-                    android:layout_toRightOf="@+id/eight"
-                    android:background="@drawable/nine" />
-            </RelativeLayout>
+                    <ImageButton
+                        android:id="@+id/nineS"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_margin="15dp"
+                        android:layout_toRightOf="@+id/eightS"
+                        android:background="@drawable/nine" />
+                </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <ImageButton
-                        android:id="@+id/zero"
+                        android:id="@+id/zeroS"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_centerInParent="true"
@@ -177,11 +177,11 @@
                         android:background="@drawable/zero" />
 
                     <ImageButton
-                        android:id="@+id/delete"
+                        android:id="@+id/deleteS"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_margin="15dp"
-                        android:layout_toRightOf="@+id/zero"
+                        android:layout_toRightOf="@+id/zeroS"
                         android:background="@drawable/x" />
                 </RelativeLayout>
             </LinearLayout>
