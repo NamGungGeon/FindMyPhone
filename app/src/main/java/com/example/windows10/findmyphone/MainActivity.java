@@ -2,6 +2,7 @@ package com.example.windows10.findmyphone;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -38,7 +40,6 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private final int PERMISSION_REQUEST_CODE=1234;
-    private final int SETTINGS_PERMISSION_REQUEST_CODE=1235;
     private final int LOGIN_GOOGLE=1235;
     private final int LOGIN_FACEBOOK=1236;
 
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().hide();
 
+        setLanguage();
         permissionCheck();
         startAppProtect();
     }
@@ -93,10 +95,33 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 }
             };
-            explainWhyNeedPermission.setValue("다음 권한이 필요합니다.", "알겠습니다", "앱 종료", ok, appClose);
+            explainWhyNeedPermission.setValue("다음 권한이 필요합니다.", "알겠습니다", "앱 종료", ok, appClose, getLayoutInflater().inflate(R.layout.permission_explain, null));
             explainWhyNeedPermission.setCancelable(false);
             explainWhyNeedPermission.show(getSupportFragmentManager(), "");
             return false;
+        }
+    }
+    private void setLanguage(){
+        if(settings.getLanguage()==null){
+            final DialogMaker setLang= new DialogMaker();
+            setLang.setValue("언어 설정", "", "", null, null,
+                    new String[]{"한국어", "English (not yet supported)"},
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case 0:
+                                    settings.setLanguage(settings.KOR);
+                                    setLang.dismiss();
+                                    break;
+                                case 1:
+                                    Toast.makeText(getApplicationContext(), "Not yet suporrted language", Toast.LENGTH_SHORT);
+                                    break;
+                            }
+                        }
+                    });
+            //setLang.setCancelable(false);
+            setLang.show(getSupportFragmentManager(), "");
         }
     }
 

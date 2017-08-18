@@ -18,6 +18,9 @@ public class Settings {
     public final String loginType_google="google";
     public final String loginType_facebook="facebook";
 
+    public final String KOR="kor";
+    public final String ENG="eng";
+
     public final String keyNotExist="KEY IS NOT EXIST";
 
     private Settings(Context c){
@@ -65,6 +68,13 @@ public class Settings {
     }
     public static Settings getInstance(){
         return inst;
+    }
+
+    public String getLanguage(){
+        return preferences.getString("langage", null);
+    }
+    public void setLanguage(String s){
+        editor.putString("language", s).apply();
     }
 
     public boolean getIsFirst(){

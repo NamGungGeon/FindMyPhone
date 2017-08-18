@@ -24,7 +24,7 @@ public class DialogMaker extends DialogFragment {
     private Callback callback_negative=null;
     private View childView=null;
 
-    private ArrayAdapter<String> arrayAdapter=null;
+    private String list[]=null;
     private DialogInterface.OnClickListener adapterListener=null;
 
 
@@ -46,13 +46,13 @@ public class DialogMaker extends DialogFragment {
         this.childView=childView;
     }
 
-    public void setValue(String message, String positiveMsg, String negativeMsg, Callback callback_positive, Callback callback_negative, ArrayAdapter<String> arrayAdapter, DialogInterface.OnClickListener adapterListener){
+    public void setValue(String message, String positiveMsg, String negativeMsg, Callback callback_positive, Callback callback_negative, String list[], DialogInterface.OnClickListener adapterListener){
         this.message=message;
         this.positiveMsg=positiveMsg;
         this.negativeMsg=negativeMsg;
         this.callback_positive=callback_positive;
         this.callback_negative=callback_negative;
-        this.arrayAdapter=arrayAdapter;
+        this.list=list;
         this.adapterListener=adapterListener;
     }
 
@@ -69,14 +69,13 @@ public class DialogMaker extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                     }
                 });
-
         if(childView!=null){
             builder.setView(childView);
         }
-        if(arrayAdapter!=null){
-            builder.setAdapter(arrayAdapter, adapterListener);
-        }
 
+        if(list!=null){
+            builder.setItems(list, adapterListener);
+        }
         // Create the AlertDialog object and return it
         final AlertDialog dialog=builder.create();
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {

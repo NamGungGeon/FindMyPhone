@@ -1,5 +1,6 @@
 package com.example.windows10.findmyphone;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
@@ -44,7 +46,8 @@ public class MainSettingFragment extends Fragment{
                                 new DialogMaker.Callback() {
                                     @Override
                                     public void callbackMethod() {
-                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.settingActivityContainer, new AppLockerFragment()).commit();
+                                        getActivity().getSupportFragmentManager().beginTransaction()
+                                                .replace(R.id.settingActivityContainer, new AppLockerFragment()).commit();
                                         appLock.dismiss();
                                     }
                                 }
@@ -108,6 +111,29 @@ public class MainSettingFragment extends Fragment{
                     final DialogMaker devInfo=new DialogMaker();
                     devInfo.setValue("개발자 정보", "", "", null, null, getActivity().getLayoutInflater().inflate(R.layout.dev_info_page, null));
                     devInfo.show(getActivity().getSupportFragmentManager(), "");
+                    break;
+                case R.id.languageSet:
+                    if(settings.getLanguage()==null){
+                        final DialogMaker setLang= new DialogMaker();
+                        setLang.setValue("언어 설정", "", "", null, null,
+                                new String[]{"한국어", "English (not yet supported)"},
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch (which){
+                                            case 0:
+                                                settings.setLanguage(settings.KOR);
+                                                setLang.dismiss();
+                                                break;
+                                            case 1:
+                                                Toast.makeText(getActivity().getApplicationContext(), "Not yet suporrted language", Toast.LENGTH_SHORT);
+                                                break;
+                                        }
+                                    }
+                                });
+                        //setLang.setCancelable(false);
+                        setLang.show(getActivity().getSupportFragmentManager(), "");
+                    }
                     break;
             }
         }
