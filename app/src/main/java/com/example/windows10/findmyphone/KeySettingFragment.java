@@ -194,7 +194,6 @@ public class KeySettingFragment extends Fragment {
             //If can't do that, occur Exception and return false
             int keyValue=Integer.parseInt(key);
             HashMap<String, Object> val=new HashMap<String, Object>();
-
             val.put("/users/"+ FirebaseAuth.getInstance().getCurrentUser().getUid()+"/key", key);
             getDatabaseReference().updateChildren(val);
             return true;

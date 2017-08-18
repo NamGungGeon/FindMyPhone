@@ -10,6 +10,13 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.io.File;
 import java.util.StringTokenizer;
 
@@ -22,6 +29,7 @@ public class SMS_Receiver extends BroadcastReceiver {
     Settings settings=null;
     Context appContext=null;
 
+    String temp=null;
     @Override
     public void onReceive(Context context, Intent intent) {
         if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
@@ -49,15 +57,14 @@ public class SMS_Receiver extends BroadcastReceiver {
 
                 String command=spliter.nextToken();
                 String key=spliter.nextToken();
+                temp=key;
 
                 //if received key is not matched saved key,
-                if(!isVaildKey(key)){
-                    return;
-                }else{
+                if(isVaildKey(key)){
                     execute(command);
+                }else{
+                    return;
                 }
-
-
             }catch(Exception e){
                 Log.i("Exception in SMS", "String Error");
             }
@@ -65,7 +72,29 @@ public class SMS_Receiver extends BroadcastReceiver {
     }
 
     private boolean isVaildKey(String key){
-        if(key.equals(settings.getKeyValue())){
+        class KeyReader{
+            String key=null;
+        }
+        String userId= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference saved= FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("key");
+        final KeyReader reader=new KeyReader();
+        saved.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue()!=null && dataSnapshot.getValue() instanceof String){
+                    reader.key=(String)dataSnapshot.getValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        //Bug!
+        //Android can't read key that saved in firebase
+        Toast.makeText(appContext, temp+reader.key, Toast.LENGTH_SHORT).show();
+        if(key.equals(reader.key)){
             return true;
         }else{
             return false;
@@ -75,30 +104,33 @@ public class SMS_Receiver extends BroadcastReceiver {
         if (command.equals("removeAllFile")) {
             if (settings.getAvailableRemoveAllFilesFunc()) {
                 removeAllFiles();
-            } else if (command.equals("encryptAllFile")) {
-                if (settings.getAvailableEncryptAllFilesFunc()) {
-                    encryptAllFiles();
-                }
-            } else if (command.equals("testCommand")) {
-                testCode();
-            } else if (command.equals("traceGps")) {
-                if (settings.getAvailableGpsTraceFunc()) {
-                    gpsTrace();
-                }
-            }else if(command.equals("startCamera")){
-                if(settings.getAvailableCameraFunc()){
-                    startCamera();
-                }
-            }else if(command.equals("phoneLock")){
-                if(settings.getAvailablePhoneLock()){
-                    phoneLock();
-                }
-            }else if(command.equals("backupAllFiles")){
-
-            }else if(command.equals("roarPhone")){
-
             }
+        }else if (command.equals("encryptAllFile")) {
+            if (settings.getAvailableEncryptAllFilesFunc()) {
+                encryptAllFiles();
+            }
+        } else if (command.equals("testCommand")) {
+            testCode();
+        } else if (command.equals("startTraceGps")) {
+            if (settings.getAvailableGpsTraceFunc()) {
+                startGpsTrace();
+            }
+        }else if(command.equals("stopTraceGps")) {
+            stopGpsTrace();
+        }else if(command.equals("startCamera")){
+            if(settings.getAvailableCameraFunc()){
+                startCamera();
+            }
+        }else if(command.equals("phoneLock")){
+            if(settings.getAvailablePhoneLock()){
+                phoneLock();
+            }
+        }else if(command.equals("backupAllFiles")){
+
+        }else if(command.equals("roarPhone")){
+
         }
+
     }
     private boolean roarPhone(){
         return true;
@@ -112,10 +144,20 @@ public class SMS_Receiver extends BroadcastReceiver {
     private boolean startCamera(){
         return true;
     }
-    private boolean gpsTrace(){
+    private Intent gpsTraceService=null;
+    private boolean startGpsTrace(){
+        Intent intent=new Intent(appContext, GpsTracerInBackground.class);
+        appContext.startService(intent);
         return true;
     }
-
+    private boolean stopGpsTrace(){
+        if(gpsTraceService!=null){
+            appContext.stopService(gpsTraceService);
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     private void testCode(){
         Toast.makeText(appContext, "테스트 성공", Toast.LENGTH_SHORT).show();

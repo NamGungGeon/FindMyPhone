@@ -1,6 +1,5 @@
 package com.example.windows10.findmyphone;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
@@ -113,6 +111,7 @@ public class MainSettingFragment extends Fragment{
                     devInfo.show(getActivity().getSupportFragmentManager(), "");
                     break;
                 case R.id.languageSet:
+                    /*
                     if(settings.getLanguage()==null){
                         final DialogMaker setLang= new DialogMaker();
                         setLang.setValue("언어 설정", "", "", null, null,
@@ -133,7 +132,10 @@ public class MainSettingFragment extends Fragment{
                                 });
                         //setLang.setCancelable(false);
                         setLang.show(getActivity().getSupportFragmentManager(), "");
+
                     }
+                    */
+                    Toast.makeText(getActivity().getApplicationContext(), "미구현", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -262,6 +264,7 @@ public class MainSettingFragment extends Fragment{
                             settings.setAvailableGpsTraceFunc(true);
                             enableGpsTrace.setChecked(true);
                         }
+
                         break;
                     case R.id.useCameraFunction:
                     case R.id.cameraWrapper:
