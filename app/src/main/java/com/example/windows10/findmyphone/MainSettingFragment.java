@@ -19,6 +19,13 @@ import android.widget.Toast;
 public class MainSettingFragment extends Fragment{
     private final int GPS_SETTING_ACTIVITY_CODE=1009;
 
+    final int APP_LOCK_SETTING=6044;
+    final int KEY_SETTING=6045;
+    final int PIN_MANAGE=6046;
+
+    final int SUCCESS=2033;
+    final int FAIL=2034;
+
     private Button appLockStatusBtn=null;
     private Button receiveStatusBtn=null;
     private Button gpsStatusBtn=null;
@@ -37,15 +44,14 @@ public class MainSettingFragment extends Fragment{
             switch (view.getId()){
                 case R.id.appLock:
                     if(settings.getIsLockThisApp()){
-                        //Make app unlocked
+                        getActivity().startActivityForResult(new Intent(getActivity().getApplicationContext(), AppLockerManageActivity.class), PIN_MANAGE);
                     }else{
                         final DialogMaker appLock=new DialogMaker();
                         appLock.setValue("앱 잠금을 설정합니다.", "확인", "취소",
                                 new DialogMaker.Callback() {
                                     @Override
                                     public void callbackMethod() {
-                                        getActivity().getSupportFragmentManager().beginTransaction()
-                                                .replace(R.id.settingActivityContainer, new AppLockerFragment()).commit();
+                                        getActivity().startActivityForResult(new Intent(getActivity().getApplicationContext(), AppLockerSettingActivity.class), KEY_SETTING);
                                         appLock.dismiss();
                                     }
                                 }
@@ -76,8 +82,7 @@ public class MainSettingFragment extends Fragment{
                         @Override
                         public void callbackMethod() {
                             changeKey.dismiss();
-                            getActivity().getSupportFragmentManager()
-                                    .beginTransaction().replace(R.id.settingActivityContainer, new KeyResettingFragment()).commit();
+                            getActivity().startActivityForResult(new Intent(getActivity().getApplicationContext(), KeyResettingActivity.class), KEY_SETTING);
                         }
                     }, new DialogMaker.Callback() {
                         @Override
@@ -197,16 +202,6 @@ public class MainSettingFragment extends Fragment{
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
-            case GPS_SETTING_ACTIVITY_CODE:
-                updateStatus();
-                break;
-        }
-    }
-
     private View getFunctionManageView(){
         View view=getActivity().getLayoutInflater().inflate(R.layout.function_manage, null);
 
@@ -230,6 +225,14 @@ public class MainSettingFragment extends Fragment{
         RelativeLayout phoneLockWrapper=(RelativeLayout)view.findViewById(R.id.phoneLockWrapper);
         final CheckBox enablePhoneLock=(CheckBox)view.findViewById(R.id.usePhoneLockFunction);
         enablePhoneLock.setChecked(settings.getAvailablePhoneLock());
+
+        RelativeLayout uploadAllWrapper=(RelativeLayout)view.findViewById(R.id.uploadAllWrapper);
+        final CheckBox enableUploadAll=(CheckBox)view.findViewById(R.id.useUploadAllFileFunction);
+        enableUploadAll.setChecked(settings.getAvailableUploadAll());
+
+        RelativeLayout loudSoundWrapper=(RelativeLayout)view.findViewById(R.id.loudSoundWrapper);
+        final CheckBox enableLoudSound=(CheckBox)view.findViewById(R.id.useLoudSoundFunction);
+        enableUploadAll.setChecked(settings.getAvailableLoudSound());
 
         View.OnClickListener listener=new View.OnClickListener() {
             @Override
@@ -287,20 +290,75 @@ public class MainSettingFragment extends Fragment{
                         }
                         break;
                     case R.id.uploadAllWrapper:
-
+                        if(settings.getAvailableUploadAll()){
+                            settings.setAvailableUploadAll(false);
+                            enableUploadAll.setChecked(false);
+                        }else{
+                            settings.setAvailableUploadAll(true);
+                            enableCamera.setChecked(true);
+                        }
                         break;
                     case R.id.loudSoundWrapper:
-
+                        if(settings.getAvailableLoudSound()){
+                            settings.setAvailableLoudSound(false);
+                            enableLoudSound.setChecked(false);
+                        }else{
+                            settings.setAvailableLoudSound(true);
+                            enableLoudSound.setChecked(true);
+                        }
                         break;
                 }
             }
         };
 
         removeAllWrapper.setOnClickListener(listener);
+        enableRemoveAll.setOnClickListener(listener);
+
         encryptWrapper.setOnClickListener(listener);
+        enableEncryptAll.setOnClickListener(listener);
+
         gpsTraceWrapper.setOnClickListener(listener);
+        enableGpsTrace.setOnClickListener(listener);
+
         cameraWrapper.setOnClickListener(listener);
+        enableCamera.setOnClickListener(listener);
+
         phoneLockWrapper.setOnClickListener(listener);
+        enablePhoneLock.setOnClickListener(listener);
+
+        uploadAllWrapper.setOnClickListener(listener);
+        enableUploadAll.setOnClickListener(listener);
+
+        loudSoundWrapper.setOnClickListener(listener);
+        enableLoudSound.setOnClickListener(listener);
         return view;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode){
+            case APP_LOCK_SETTING:
+                if(resultCode==SUCCESS){
+                    Toast.makeText(getActivity().getApplicationContext(), "앱 잠금 설정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                }else if(resultCode==FAIL){
+                    Toast.makeText(getActivity().getApplicationContext(), "앱 잠금 설정이 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case KEY_SETTING:
+                if(resultCode==SUCCESS){
+                    Toast.makeText(getActivity().getApplicationContext(), "키 설정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                }else if(resultCode==FAIL){
+                    Toast.makeText(getActivity().getApplicationContext(), "키 설정이 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case GPS_SETTING_ACTIVITY_CODE:
+                break;
+            case PIN_MANAGE:
+                break;
+        }
+        updateStatus();
+    }
+
 }

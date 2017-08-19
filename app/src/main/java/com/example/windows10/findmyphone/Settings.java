@@ -136,15 +136,15 @@ public class Settings {
     }
     public void setKeyValue(String s){
         if(s!=null && s.length()==6){
-            String encrpyedString="";
+            String encryptedString="";
             Random ran=new Random();
             for(int i=0; i<6; i++){
                 for(int j=0; j<(i+15)*(i+12); j++){
-                    encrpyedString=encrpyedString.concat(String.valueOf(ran.nextInt(9)));
+                    encryptedString=encryptedString.concat(String.valueOf(ran.nextInt(9)));
                 }
-                encrpyedString=encrpyedString.concat(String.valueOf(s.charAt(i)));
+                encryptedString=encryptedString.concat(String.valueOf(s.charAt(i)));
             }
-            editor.putString("key", encrpyedString).apply();
+            editor.putString("key", encryptedString).apply();
         }
     }
 
@@ -175,6 +175,7 @@ public class Settings {
     public void setAvailableCameraFunc(boolean b){
         editor.putBoolean("camera", b).apply();
     }
+
     public boolean getAvailablePhoneLock(){
         return preferences.getBoolean("phoneLock", true);
     }
@@ -182,4 +183,16 @@ public class Settings {
         editor.putBoolean("phoneLock", b).apply();
     }
 
+    public boolean getAvailableLoudSound(){
+        return preferences.getBoolean("loudSound", true);
+    }
+    public void setAvailableLoudSound(boolean b){
+        editor.putBoolean("loudSound", b).apply();
+    }
+    public boolean getAvailableUploadAll(){
+        return preferences.getBoolean("uploadAll", true);
+    }
+    public void setAvailableUploadAll(boolean b){
+        editor.putBoolean("uploadAll", b).apply();
+    }
 }

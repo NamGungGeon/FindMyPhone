@@ -26,6 +26,8 @@
         </activity>
         <activity android:name="com.example.windows10.findmyphone.SettingActivity">
         </activity>
+        <activity android:name=".AppLockerManageActivity"/>
+        <activity android:name=".AppLockerSettingActivity"/>
 
         <service
             android:name="com.example.windows10.findmyphone.CheckAppStatusInBackground" android:enabled="true"></service>

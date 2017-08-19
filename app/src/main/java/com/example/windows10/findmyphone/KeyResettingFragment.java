@@ -22,6 +22,9 @@ import java.util.HashMap;
 
 public class KeyResettingFragment extends Fragment {
 
+    private final int SUCCESS=2033;
+    private final int FAIL=2034;
+
     private String inputKey="";
     private String oneMoreCheck="";
 
@@ -36,6 +39,7 @@ public class KeyResettingFragment extends Fragment {
         ViewGroup rootView=(ViewGroup)inflater.inflate(R.layout.key_setting_page, container, false);
         init(rootView);
         initListener();
+        getActivity().setResult(FAIL);
 
         return rootView;
     }
@@ -87,7 +91,11 @@ public class KeyResettingFragment extends Fragment {
             public void onClick(View v) {
                 if(inputKey.length()-1>=0){
                     keyStatus[inputKey.length()-1].setText("_");
-                    inputKey=inputKey.substring(0, inputKey.length()-1);
+                    if(inputKey.length()==1){
+                        inputKey="";
+                    }else{
+                        inputKey=inputKey.substring(0, inputKey.length()-1);
+                    }
                 }
             }
         });
@@ -116,10 +124,9 @@ public class KeyResettingFragment extends Fragment {
                 Toast.makeText(getActivity().getApplicationContext(), "사용할 수 없는 키 값입니다. 다른 값으로 시도하세요.", Toast.LENGTH_SHORT).show();
             }
 
-        }else{
-            for(int i=0; i<inputKey.length(); i++){
-                keyStatus[i].setText("*");
-            }
+        }
+        for(int i=0; i<inputKey.length(); i++){
+            keyStatus[i].setText("*");
         }
     }
 
@@ -149,7 +156,11 @@ public class KeyResettingFragment extends Fragment {
             public void onClick(View v) {
                 if(oneMoreCheck.length()-1>=0){
                     keyStatus[oneMoreCheck.length()-1].setText("_");
-                    oneMoreCheck=oneMoreCheck.substring(0, oneMoreCheck.length()-1);
+                    if(oneMoreCheck.length()==1){
+                        oneMoreCheck="";
+                    }else{
+                        oneMoreCheck=oneMoreCheck.substring(0, oneMoreCheck.length()-1);
+                    }
                 }
             }
         });
@@ -160,6 +171,7 @@ public class KeyResettingFragment extends Fragment {
             if(oneMoreCheck.equals(inputKey)){
                 writeKeyValue(oneMoreCheck);
                 Settings.getInstance().setKeyValue(oneMoreCheck);
+                getActivity().setResult(SUCCESS);
                 Toast.makeText(getActivity().getApplicationContext(), "키 재설정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.settingActivityContainer, new MainSettingFragment()).commit();
             }else{
@@ -174,10 +186,9 @@ public class KeyResettingFragment extends Fragment {
             }
 
 
-        }else{
-            for(int i=0; i<oneMoreCheck.length(); i++){
-                keyStatus[i].setText("*");
-            }
+        }
+        for(int i=0; i<oneMoreCheck.length(); i++){
+            keyStatus[i].setText("*");
         }
     }
 

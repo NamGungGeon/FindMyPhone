@@ -16,6 +16,10 @@ import android.widget.Toast;
 
 public class AppLockerSettingFragment extends Fragment {
 
+    private final int SUCCESS=2033;
+    private final int FAIL=2034;
+    private int result=FAIL;
+
     private String inputPIN="";
     private String oneMoreCheck="";
 
@@ -30,15 +34,16 @@ public class AppLockerSettingFragment extends Fragment {
         ViewGroup rootView=(ViewGroup)inflater.inflate(R.layout.app_lock_setting_page, container, false);
         init(rootView);
         initListener();
+        getActivity().setResult(result);
 
         return rootView;
     }
 
     private void init(ViewGroup rootView){
-        keyStatus[0]=(TextView)rootView.findViewById(R.id.firstKey);
-        keyStatus[1]=(TextView)rootView.findViewById(R.id.secondKey);
-        keyStatus[2]=(TextView)rootView.findViewById(R.id.thirdKey);
-        keyStatus[3]=(TextView)rootView.findViewById(R.id.forthKey);
+        keyStatus[0]=(TextView)rootView.findViewById(R.id.firstPINS);
+        keyStatus[1]=(TextView)rootView.findViewById(R.id.secondPINS);
+        keyStatus[2]=(TextView)rootView.findViewById(R.id.thirdPINS);
+        keyStatus[3]=(TextView)rootView.findViewById(R.id.forthPINS);
 
         keyNumberBtn[0]=(ImageButton)rootView.findViewById(R.id.oneS);
         keyNumberBtn[1]=(ImageButton)rootView.findViewById(R.id.twoS);
@@ -77,9 +82,13 @@ public class AppLockerSettingFragment extends Fragment {
         deleteKeyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(inputPIN.length()-1>=0){
+                if(inputPIN.length()>=1){
                     keyStatus[inputPIN.length()-1].setText("_");
-                    inputPIN=inputPIN.substring(0, inputPIN.length()-1);
+                    if(inputPIN.length()==1){
+                        inputPIN="";
+                    }else{
+                        inputPIN=inputPIN.substring(0, inputPIN.length()-1);
+                    }
                 }
             }
         });
@@ -96,15 +105,13 @@ public class AppLockerSettingFragment extends Fragment {
             checkKeyOneMore();
             Toast.makeText(getActivity().getApplicationContext(), "비밀번호 확인을 위해 다시 한번 입력해 주세요.", Toast.LENGTH_SHORT).show();
 
-        }else{
-            for(int i=0; i<inputPIN.length(); i++){
-                keyStatus[i].setText("*");
-            }
+        }
+        for(int i=0; i<inputPIN.length(); i++){
+            keyStatus[i].setText("*");
         }
     }
 
     private void checkKeyOneMore(){
-
         zeroKeyNumberBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,21 +134,26 @@ public class AppLockerSettingFragment extends Fragment {
         deleteKeyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(oneMoreCheck.length()-1>0){
+                if(oneMoreCheck.length()-1>=0){
                     keyStatus[oneMoreCheck.length()-1].setText("_");
-                    oneMoreCheck=oneMoreCheck.substring(0, oneMoreCheck.length()-2);
+                    if(oneMoreCheck.length()==1){
+                        oneMoreCheck="";
+                    }else{
+                        oneMoreCheck=oneMoreCheck.substring(0, inputPIN.length()-1);
+                    }
                 }
             }
         });
     }
 
     private void recheck(){
-        if(oneMoreCheck.length()==6){
+        if(oneMoreCheck.length()==4){
             if(oneMoreCheck.equals(inputPIN)){
                 Settings.getInstance().setIsLockThisApp(true);
                 Settings.getInstance().setAppPassWord(oneMoreCheck);
                 Toast.makeText(getActivity().getApplicationContext(), "비밀번호 설정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.settingActivityContainer, new MainSettingFragment()).commit();
+                result=SUCCESS;
+                getActivity().finish();
             }else{
                 initListener();
                 oneMoreCheck="";
@@ -154,11 +166,9 @@ public class AppLockerSettingFragment extends Fragment {
             }
 
 
-        }else{
-            for(int i=0; i<oneMoreCheck.length(); i++){
-                keyStatus[i].setText("*");
-            }
+        }
+        for(int i=0; i<oneMoreCheck.length(); i++){
+            keyStatus[i].setText("*");
         }
     }
-
 }

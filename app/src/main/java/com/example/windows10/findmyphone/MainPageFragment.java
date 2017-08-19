@@ -11,8 +11,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 
@@ -42,10 +48,36 @@ public class MainPageFragment extends Fragment implements Serializable{
                     startActivityForResult(intent, OPEN_SETTING_ACTIVITY);
                     break;
                 case R.id.helpBtn:
+                    Toast.makeText(getActivity().getApplicationContext(), getKey(), Toast.LENGTH_SHORT).show();
                     break;
             }
         }
     };
+
+    //Test Code
+    private String getKey(){
+        class KeyReader{
+            String key="NULL";
+        }
+
+        String userId= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference saved= FirebaseDatabase.getInstance().getReference().child("/users").child("/"+userId).child("/key");
+        final KeyReader reader=new KeyReader();
+        saved.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue()!=null && dataSnapshot.getValue() instanceof String){
+                    reader.key=(String)dataSnapshot.getValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return reader.key;
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

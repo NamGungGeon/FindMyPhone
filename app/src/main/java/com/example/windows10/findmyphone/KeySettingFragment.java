@@ -90,7 +90,11 @@ public class KeySettingFragment extends Fragment {
             public void onClick(View v) {
                 if(inputKey.length()-1>=0){
                     keyStatus[inputKey.length()-1].setText("_");
-                    inputKey=inputKey.substring(0, inputKey.length()-1);
+                    if(inputKey.length()==1){
+                        inputKey="";
+                    }else{
+                        inputKey=inputKey.substring(0, inputKey.length()-1);
+                    }
                 }
             }
         });
@@ -119,10 +123,9 @@ public class KeySettingFragment extends Fragment {
                 Toast.makeText(getActivity().getApplicationContext(), "사용할 수 없는 키 값입니다. 다른 값으로 시도하세요.", Toast.LENGTH_SHORT).show();
             }
 
-        }else{
-            for(int i=0; i<inputKey.length(); i++){
-                keyStatus[i].setText("*");
-            }
+        }
+        for(int i=0; i<inputKey.length(); i++){
+            keyStatus[i].setText("*");
         }
     }
 
@@ -150,9 +153,13 @@ public class KeySettingFragment extends Fragment {
         deleteKeyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(oneMoreCheck.length()-1>0){
+                if(oneMoreCheck.length()-1>=0){
                     keyStatus[oneMoreCheck.length()-1].setText("_");
-                    oneMoreCheck=oneMoreCheck.substring(0, oneMoreCheck.length()-2);
+                    if(oneMoreCheck.length()==1){
+                        oneMoreCheck="";
+                    }else{
+                        oneMoreCheck=oneMoreCheck.substring(0, oneMoreCheck.length()-1);
+                    }
                 }
             }
         });
@@ -177,10 +184,9 @@ public class KeySettingFragment extends Fragment {
             }
 
 
-        }else{
-            for(int i=0; i<oneMoreCheck.length(); i++){
-                keyStatus[i].setText("*");
-            }
+        }
+        for(int i=0; i<oneMoreCheck.length(); i++){
+            keyStatus[i].setText("*");
         }
     }
 

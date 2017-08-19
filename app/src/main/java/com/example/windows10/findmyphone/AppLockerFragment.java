@@ -1,5 +1,6 @@
 package com.example.windows10.findmyphone;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,7 +18,7 @@ import android.widget.Toast;
 
 public class AppLockerFragment extends Fragment {
 
-    private Settings settings=Settings.getInstance(getActivity().getApplicationContext());
+    private Settings settings=Settings.getInstance();
 
     private String inputPIN="";
 
@@ -68,12 +69,17 @@ public class AppLockerFragment extends Fragment {
             });
         }
 
+        deletePinBtn=(ImageButton)rootView.findViewById(R.id.delete);
         deletePinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(inputPIN.length()-1>0){
+                if(inputPIN.length()-1>=0){
                     pinStatus[inputPIN.length()-1].setText("_");
-                    inputPIN=inputPIN.substring(0, inputPIN.length()-2);
+                    if(inputPIN.length()==1){
+                        inputPIN="";
+                    }else{
+                        inputPIN=inputPIN.substring(0, inputPIN.length()-1);
+                    }
                 }
             }
         });
@@ -102,8 +108,7 @@ public class AppLockerFragment extends Fragment {
                 Toast.makeText(getActivity().getApplicationContext(), "3회 이상 틀렸습니다. 앱을 종료합니다.", Toast.LENGTH_LONG).show();
                 getActivity().finish();
             }
-        }else{
-            pinStatus[inputPIN.length()-1].setText("*");
         }
+        pinStatus[inputPIN.length()-1].setText("*");
     }
 }
