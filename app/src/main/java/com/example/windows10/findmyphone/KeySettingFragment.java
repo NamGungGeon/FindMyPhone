@@ -123,9 +123,10 @@ public class KeySettingFragment extends Fragment {
                 Toast.makeText(getActivity().getApplicationContext(), "사용할 수 없는 키 값입니다. 다른 값으로 시도하세요.", Toast.LENGTH_SHORT).show();
             }
 
-        }
-        for(int i=0; i<inputKey.length(); i++){
-            keyStatus[i].setText("*");
+        }else{
+            for(int i=0; i<inputKey.length(); i++){
+                keyStatus[i].setText("*");
+            }
         }
     }
 
@@ -184,9 +185,10 @@ public class KeySettingFragment extends Fragment {
             }
 
 
-        }
-        for(int i=0; i<oneMoreCheck.length(); i++){
-            keyStatus[i].setText("*");
+        }else{
+            for(int i=0; i<oneMoreCheck.length(); i++){
+                keyStatus[i].setText("*");
+            }
         }
     }
 

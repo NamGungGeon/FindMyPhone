@@ -105,9 +105,10 @@ public class AppLockerSettingFragment extends Fragment {
             checkKeyOneMore();
             Toast.makeText(getActivity().getApplicationContext(), "비밀번호 확인을 위해 다시 한번 입력해 주세요.", Toast.LENGTH_SHORT).show();
 
-        }
-        for(int i=0; i<inputPIN.length(); i++){
-            keyStatus[i].setText("*");
+        }else{
+            for(int i=0; i<inputPIN.length(); i++){
+                keyStatus[i].setText("*");
+            }
         }
     }
 
@@ -139,7 +140,7 @@ public class AppLockerSettingFragment extends Fragment {
                     if(oneMoreCheck.length()==1){
                         oneMoreCheck="";
                     }else{
-                        oneMoreCheck=oneMoreCheck.substring(0, inputPIN.length()-1);
+                        oneMoreCheck=oneMoreCheck.substring(0, oneMoreCheck.length()-1);
                     }
                 }
             }
@@ -151,8 +152,8 @@ public class AppLockerSettingFragment extends Fragment {
             if(oneMoreCheck.equals(inputPIN)){
                 Settings.getInstance().setIsLockThisApp(true);
                 Settings.getInstance().setAppPassWord(oneMoreCheck);
-                Toast.makeText(getActivity().getApplicationContext(), "비밀번호 설정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                 result=SUCCESS;
+                getActivity().setResult(result);
                 getActivity().finish();
             }else{
                 initListener();
@@ -164,11 +165,11 @@ public class AppLockerSettingFragment extends Fragment {
                     keyStatus[i].setText("_");
                 }
             }
-
-
-        }
-        for(int i=0; i<oneMoreCheck.length(); i++){
-            keyStatus[i].setText("*");
+        }else{
+            for(int i=0; i<oneMoreCheck.length(); i++){
+                keyStatus[i].setText("*");
+            }
         }
     }
+
 }

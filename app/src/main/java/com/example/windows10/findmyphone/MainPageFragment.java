@@ -48,35 +48,42 @@ public class MainPageFragment extends Fragment implements Serializable{
                     startActivityForResult(intent, OPEN_SETTING_ACTIVITY);
                     break;
                 case R.id.helpBtn:
-                    Toast.makeText(getActivity().getApplicationContext(), getKey(), Toast.LENGTH_SHORT).show();
+                    getKey();
+                    Toast.makeText(getActivity().getApplicationContext(), String.valueOf(reader.k), Toast.LENGTH_SHORT).show();
                     break;
             }
         }
     };
 
+    class KeyReader{
+        String key="No Define";
+        boolean k=false;
+    }
+    final KeyReader reader=new KeyReader();
     //Test Code
-    private String getKey(){
-        class KeyReader{
-            String key="NULL";
-        }
+    private synchronized boolean getKey(){
 
         String userId= FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference saved= FirebaseDatabase.getInstance().getReference().child("/users").child("/"+userId).child("/key");
-        final KeyReader reader=new KeyReader();
-        saved.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue()!=null && dataSnapshot.getValue() instanceof String){
-                    reader.key=(String)dataSnapshot.getValue();
+        synchronized (this){
+
+            saved.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.getValue()!=null){
+                        reader.k=true;
+                        //reader.key=((String)dataSnapshot.getValue()).concat("");
+                        //Toast.makeText(getActivity().getApplicationContext(), (String)dataSnapshot.getValue(), Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-        return reader.key;
+                }
+            });
+        }
+        return reader.k;
     }
 
     @Override

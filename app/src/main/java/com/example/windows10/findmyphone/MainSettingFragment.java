@@ -51,7 +51,7 @@ public class MainSettingFragment extends Fragment{
                                 new DialogMaker.Callback() {
                                     @Override
                                     public void callbackMethod() {
-                                        getActivity().startActivityForResult(new Intent(getActivity().getApplicationContext(), AppLockerSettingActivity.class), KEY_SETTING);
+                                        startActivityForResult(new Intent(getActivity().getApplicationContext(), AppLockerSettingActivity.class), APP_LOCK_SETTING);
                                         appLock.dismiss();
                                     }
                                 }
@@ -82,7 +82,7 @@ public class MainSettingFragment extends Fragment{
                         @Override
                         public void callbackMethod() {
                             changeKey.dismiss();
-                            getActivity().startActivityForResult(new Intent(getActivity().getApplicationContext(), KeyResettingActivity.class), KEY_SETTING);
+                            startActivityForResult(new Intent(getActivity().getApplicationContext(), KeyResettingActivity.class), KEY_SETTING);
                         }
                     }, new DialogMaker.Callback() {
                         @Override
@@ -337,6 +337,7 @@ public class MainSettingFragment extends Fragment{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        updateStatus();
 
         switch (requestCode){
             case APP_LOCK_SETTING:
@@ -358,7 +359,6 @@ public class MainSettingFragment extends Fragment{
             case PIN_MANAGE:
                 break;
         }
-        updateStatus();
     }
 
 }

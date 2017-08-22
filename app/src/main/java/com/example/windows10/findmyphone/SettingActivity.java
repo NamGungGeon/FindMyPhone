@@ -21,8 +21,12 @@ public class SettingActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().hide();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.settingActivityContainer, new MainSettingFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.settingActivityContainer, new MainSettingFragment(), "MainSetting").commit();
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        getSupportFragmentManager().findFragmentByTag("MainSetting").onActivityResult(requestCode, resultCode, data);
+    }
 }
