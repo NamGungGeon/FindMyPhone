@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     private final int LOGIN_GOOGLE=1235;
     private final int LOGIN_FACEBOOK=1236;
 
-
     private Settings settings=null;
 
     private GoogleSignInOptions gso=null;

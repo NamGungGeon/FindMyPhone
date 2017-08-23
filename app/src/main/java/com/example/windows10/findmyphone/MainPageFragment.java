@@ -14,11 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 
@@ -48,43 +43,14 @@ public class MainPageFragment extends Fragment implements Serializable{
                     startActivityForResult(intent, OPEN_SETTING_ACTIVITY);
                     break;
                 case R.id.helpBtn:
-                    getKey();
-                    Toast.makeText(getActivity().getApplicationContext(), String.valueOf(reader.k), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            KeyGetter.getInstance().getKey(getActivity().getSupportFragmentManager(), getActivity().getLayoutInflater()),
+                            Toast.LENGTH_SHORT)
+                            .show();
                     break;
             }
         }
     };
-
-    class KeyReader{
-        String key="No Define";
-        boolean k=false;
-    }
-    final KeyReader reader=new KeyReader();
-    //Test Code
-    private synchronized boolean getKey(){
-
-        String userId= FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference saved= FirebaseDatabase.getInstance().getReference().child("/users").child("/"+userId).child("/key");
-        synchronized (this){
-
-            saved.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.getValue()!=null){
-                        reader.k=true;
-                        //reader.key=((String)dataSnapshot.getValue()).concat("");
-                        //Toast.makeText(getActivity().getApplicationContext(), (String)dataSnapshot.getValue(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-        return reader.k;
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
