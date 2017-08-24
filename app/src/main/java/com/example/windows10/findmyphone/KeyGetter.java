@@ -16,7 +16,7 @@ import com.google.firebase.database.ValueEventListener;
  * Created by Windows10 on 2017-08-22.
  */
 
-public class KeyGetter{
+public class KeyGetter implements Runnable{
     //This class is designed as singleton pattern.
     private KeyGetter(){
     }
@@ -27,6 +27,7 @@ public class KeyGetter{
         }
         return inst;
     }
+
 
     //KeyReader class is only used for getting key from database
     private class KeyReader{
@@ -39,7 +40,9 @@ public class KeyGetter{
 
     private final DialogMaker loadingDialog=new DialogMaker();
 
-    public String getKey(FragmentManager fragmentManager, LayoutInflater inflater){
+    boolean b=true;
+    @Override
+    public void run() {
         String userId= FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference saved= FirebaseDatabase.getInstance().getReference().child("/users").child("/"+userId).child("/key");
         saved.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -47,6 +50,7 @@ public class KeyGetter{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.getValue()!=null){
                     reader.key=((String)dataSnapshot.getValue());
+                    b=false;
                 }
             }
 
@@ -55,8 +59,14 @@ public class KeyGetter{
 
             }
         });
+    }
+
+    public String getKey(FragmentManager fragmentManager, LayoutInflater inflater){
+        Thread keyGetterWithThread=new Thread(this);
+        keyGetterWithThread.start();
+
         loadingDialog.setValue("키 값을 로딩하는 중입니다.", null, null, null, null, getProgreeBarLayout(inflater));
-        //loadingDialog.setCancelable(false);
+        loadingDialog.setCancelable(false);
         loadingDialog.show(fragmentManager, "");
 
         try{
@@ -68,17 +78,15 @@ public class KeyGetter{
     }
 
     private void looper() throws InterruptedException{
-        while(true) {
-            if(!reader.key.equals(LOADING)){
-                loadingDialog.dismiss();
-                break;
-            }
-            Thread.sleep(1000L);
+        int loopNumber=0;
+        while(b) {
+            Log.i(TAG, reader.key);
+            Log.i(TAG, String.valueOf(++loopNumber));
+            Thread.sleep(3000L);
         }
     }
+
     private View getProgreeBarLayout(LayoutInflater inflater){
         return inflater.inflate(R.layout.progress_bar, null);
     }
-
-
 }
