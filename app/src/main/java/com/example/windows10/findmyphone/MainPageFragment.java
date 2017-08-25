@@ -26,7 +26,7 @@ import java.io.Serializable;
  * Created by Windows10 on 2017-08-05.
  */
 
-//백그라운드에서 쓰레드를 이용해 계속해서 앱 상태를 점검해야 함(미구현).
+
 public class MainPageFragment extends Fragment implements Serializable{
     public ImageView appStatusIcon;
     public TextView appStatus;
@@ -48,10 +48,8 @@ public class MainPageFragment extends Fragment implements Serializable{
                     startActivityForResult(intent, OPEN_SETTING_ACTIVITY);
                     break;
                 case R.id.helpBtn:
-                    Toast.makeText(getActivity().getApplicationContext(),
-                            KeyGetter.getInstance().getKey(getActivity().getSupportFragmentManager(), getActivity().getLayoutInflater()),
-                            Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(getActivity().getApplicationContext(), "Go to Lab Activity", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getActivity().getApplicationContext(), Lab.class));
                     break;
             }
         }

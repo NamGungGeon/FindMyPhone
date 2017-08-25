@@ -85,7 +85,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="18dp"
                     android:layout_alignParentLeft="true"
-                    android:text="카메라 촬영 기능"/>
+                    android:text="카메라 촬영 기능(미구현)"/>
                 <CheckBox
                     android:id="@+id/useCameraFunction"
                     android:layout_width="40dp"
@@ -106,7 +106,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="18dp"
                     android:layout_alignParentLeft="true"
-                    android:text="휴대폰 잠금 기능"/>
+                    android:text="휴대폰 잠금 기능(미구현)"/>
                 <CheckBox
                     android:id="@+id/usePhoneLockFunction"
                     android:layout_width="40dp"
@@ -127,7 +127,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="18dp"
                     android:layout_alignParentLeft="true"
-                    android:text="모든 파일 백업"/>
+                    android:text="모든 파일 백업(미구현)"/>
                 <CheckBox
                     android:id="@+id/useUploadAllFileFunction"
                     android:layout_width="40dp"
@@ -148,7 +148,7 @@
                     android:layout_centerVertical="true"
                     android:textSize="18dp"
                     android:layout_alignParentLeft="true"
-                    android:text="큰 소리로 알림 기능"/>
+                    android:text="큰 소리로 알림 기능(미구현)"/>
                 <CheckBox
                     android:id="@+id/useLoudSoundFunction"
                     android:layout_width="40dp"

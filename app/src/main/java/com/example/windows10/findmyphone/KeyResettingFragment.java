@@ -170,11 +170,13 @@ public class KeyResettingFragment extends Fragment {
     private void recheck(){
         if(oneMoreCheck.length()==6){
             if(oneMoreCheck.equals(inputKey)){
+                // Case : Success
                 writeKeyValue(oneMoreCheck);
                 Settings.getInstance().setKeyValue(oneMoreCheck);
                 getActivity().setResult(SUCCESS);
                 getActivity().finish();
             }else{
+                // Case : Fail
                 initListener();
                 oneMoreCheck="";
                 inputKey="";

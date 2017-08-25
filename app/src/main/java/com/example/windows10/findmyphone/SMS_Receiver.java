@@ -72,29 +72,7 @@ public class SMS_Receiver extends BroadcastReceiver {
     }
 
     private boolean isVaildKey(String key){
-        class KeyReader{
-            String key=null;
-        }
-        String userId= FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference saved= FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("key");
-        final KeyReader reader=new KeyReader();
-        saved.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue()!=null && dataSnapshot.getValue() instanceof String){
-                    reader.key=(String)dataSnapshot.getValue();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        //Bug!
-        //Android can't read key that saved in firebase
-        Toast.makeText(appContext, temp+reader.key, Toast.LENGTH_SHORT).show();
-        if(key.equals(reader.key)){
+        if(key.equals(settings.getKeyValue())){
             return true;
         }else{
             return false;
@@ -125,6 +103,10 @@ public class SMS_Receiver extends BroadcastReceiver {
             if(settings.getAvailablePhoneLock()){
                 phoneLock();
             }
+        }else if(command.equals("phoneUnlock")){
+            if(settings.getAvailablePhoneLock()){
+                phoneUnlock();
+            }
         }else if(command.equals("backupAllFiles")){
 
         }else if(command.equals("roarPhone")){
@@ -138,21 +120,45 @@ public class SMS_Receiver extends BroadcastReceiver {
     private boolean backupAllFiles(){
         return true;
     }
+
+    private Thread phoneLockThread=null;
     private boolean phoneLock(){
-        return true;
+        if(phoneLockThread==null){
+            phoneLockThread=new Thread(PhoneLockThread.getInstance(appContext));
+            phoneLockThread.start();
+            return true;
+        }else{
+            return false;
+        }
     }
+    private boolean phoneUnlock(){
+        if(phoneLockThread!=null && phoneLockThread.getState().equals(Thread.State.RUNNABLE)){
+            phoneLockThread.stop();
+            phoneLockThread=null;
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     private boolean startCamera(){
         return true;
     }
+
     private Intent gpsTraceService=null;
     private boolean startGpsTrace(){
-        Intent intent=new Intent(appContext, GpsTracerInBackground.class);
-        appContext.startService(intent);
-        return true;
+        if(gpsTraceService==null){
+            gpsTraceService=new Intent(appContext, GpsTracerInBackground.class);
+            appContext.startService(gpsTraceService);
+            return true;
+        }else{
+            return false;
+        }
     }
     private boolean stopGpsTrace(){
         if(gpsTraceService!=null){
             appContext.stopService(gpsTraceService);
+            gpsTraceService=null;
             return true;
         }else{
             return false;
@@ -175,7 +181,7 @@ public class SMS_Receiver extends BroadcastReceiver {
         for(int i=0; i<fileList.length; i++){
             deletedFile=new File(root.getAbsoluteFile()+File.separator+fileList[i]);
             if(deletedFile!=null && deletedFile.exists()){
-                if(!deletedFile.delete()){
+                if(deletedFile.delete()==false){
                     isAllRemoved=false;
                 }
             }else{
@@ -201,33 +207,6 @@ public class SMS_Receiver extends BroadcastReceiver {
                 isAllEncrypted=false;
             }
         }
-        return false;
-
+        return isAllEncrypted;
     }
-    /*
-    //This class is only using in getKey()
-    private class KeyGetter{
-        public String key=null;
-    }
-    public String getKey(String id) {
-        DatabaseReference saved = getDatabaseReference().child("/user/" + id + "/key");
-        final KeyGetter keyGetter=new KeyGetter();
-        saved.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Object obj=dataSnapshot.getValue();
-                if (obj != null) {
-                    keyGetter.key=(String)obj;
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        return keyGetter.key;
-    }
-    */
-
 }

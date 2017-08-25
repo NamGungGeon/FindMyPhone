@@ -55,10 +55,10 @@ public class GpsTracerInBackground extends Service implements Runnable {
     @Override
     public void onCreate() {
         super.onCreate();
-        thread = new Thread(this);
         locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+
+        thread = new Thread(this);
         thread.start();
-        //Toast.makeText(getApplicationContext(), "추적 시작", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -83,11 +83,9 @@ public class GpsTracerInBackground extends Service implements Runnable {
             while(isActive){
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, mLocationListener);
                 writeGpsToFirebase(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
-                Toast.makeText(getApplicationContext(), "Tracing..", Toast.LENGTH_SHORT).show();
             }
         } else {
             isActive=false;
-            thread.stop();
         }
     }
 
@@ -107,7 +105,6 @@ public class GpsTracerInBackground extends Service implements Runnable {
     @Override
     public void onDestroy() {
         isActive=false;
-        thread.stop();
         super.onDestroy();
     }
 }

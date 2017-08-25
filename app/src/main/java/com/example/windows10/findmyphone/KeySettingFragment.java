@@ -25,6 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class KeySettingFragment extends Fragment {
 
+    final int SUCCESS=2033;
+    final int FAIL=2034;
+
     private String inputKey="";
     private String oneMoreCheck="";
 
@@ -39,6 +42,7 @@ public class KeySettingFragment extends Fragment {
         ViewGroup rootView=(ViewGroup)inflater.inflate(R.layout.key_setting_page, container, false);
         init(rootView);
         initListener();
+        getActivity().setResult(FAIL);
 
         return rootView;
     }
@@ -171,8 +175,9 @@ public class KeySettingFragment extends Fragment {
             if(oneMoreCheck.equals(inputKey)){
                 writeKeyValue(oneMoreCheck);
                 Settings.getInstance().setKeyValue(oneMoreCheck);
-                Toast.makeText(getActivity().getApplicationContext(), "키 설정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new MainPageFragment()).commit();
+                //Toast.makeText(getActivity().getApplicationContext(), "키 설정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                getActivity().setResult(SUCCESS);
+                getActivity().finish();
             }else{
                 initListener();
                 oneMoreCheck="";

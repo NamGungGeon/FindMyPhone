@@ -25,37 +25,6 @@ public class Settings {
 
     private Settings(Context c){
         preferences=c.getSharedPreferences("Settings", Context.MODE_PRIVATE);
-
-        /*Test Code*/
-        /*
-        File root = new File("/data/data/com.example.windows10.findmyphone/shared_prefs");
-        if (root.isDirectory()) {
-            for (File child: root.listFiles()) {
-                File f=new File(Environment.getExternalStorageDirectory().getAbsolutePath()+File.separator+child.getName());
-
-                try {
-                    InputStream inputStream=new FileInputStream(child);
-                    OutputStream outputStream=new FileOutputStream(f);
-
-                    int i=0;
-                    while(true){
-                        int read=inputStream.read();
-                        if(read==-1){
-                            break;
-                        }
-                        outputStream.write(read);
-
-                        i++;
-                        Log.i("Reading...", String.valueOf(i));
-                    }
-                } catch (Exception e) {
-
-                }
-
-            }
-        }
-        */
-
         editor=preferences.edit();
     }
 

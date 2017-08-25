@@ -21,6 +21,7 @@ public class MainSettingFragment extends Fragment{
 
     final int APP_LOCK_SETTING=6044;
     final int KEY_SETTING=6045;
+    final int KEY_MANAGE=6047;
     final int PIN_MANAGE=6046;
 
     final int SUCCESS=2033;
@@ -77,20 +78,11 @@ public class MainSettingFragment extends Fragment{
                     startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), GPS_SETTING_ACTIVITY_CODE);
                     break;
                 case R.id.changeKey:
-                    final DialogMaker changeKey=new DialogMaker();
-                    changeKey.setValue("키 값을 재설정합니다", "확인", "취소", new DialogMaker.Callback() {
-                        @Override
-                        public void callbackMethod() {
-                            changeKey.dismiss();
-                            startActivityForResult(new Intent(getActivity().getApplicationContext(), KeyResettingActivity.class), KEY_SETTING);
-                        }
-                    }, new DialogMaker.Callback() {
-                        @Override
-                        public void callbackMethod() {
-                            changeKey.dismiss();
-                        }
-                    });
-                    changeKey.show(getActivity().getSupportFragmentManager(), "");
+                    if(settings.getKeyValue().equals(settings.keyNotExist)){
+                        startActivityForResult(new Intent(getActivity().getApplicationContext(), KeySettingActivity.class), KEY_SETTING);
+                    }else{
+                        startActivityForResult(new Intent(getActivity().getApplicationContext(), KeyManageActivity.class), KEY_MANAGE);
+                    }
                     break;
                 case R.id.functionManage:
                     final DialogMaker functionMange=new DialogMaker();
@@ -116,31 +108,7 @@ public class MainSettingFragment extends Fragment{
                     devInfo.show(getActivity().getSupportFragmentManager(), "");
                     break;
                 case R.id.languageSet:
-                    /*
-                    if(settings.getLanguage()==null){
-                        final DialogMaker setLang= new DialogMaker();
-                        setLang.setValue("언어 설정", "", "", null, null,
-                                new String[]{"한국어", "English (not yet supported)"},
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch (which){
-                                            case 0:
-                                                settings.setLanguage(settings.KOR);
-                                                setLang.dismiss();
-                                                break;
-                                            case 1:
-                                                Toast.makeText(getActivity().getApplicationContext(), "Not yet suporrted language", Toast.LENGTH_SHORT);
-                                                break;
-                                        }
-                                    }
-                                });
-                        //setLang.setCancelable(false);
-                        setLang.show(getActivity().getSupportFragmentManager(), "");
-
-                    }
-                    */
-                    Toast.makeText(getActivity().getApplicationContext(), "미구현", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "미구현 기능입니다.", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -170,8 +138,11 @@ public class MainSettingFragment extends Fragment{
         inputCodeBtn.setOnClickListener(onClickListener);
         devInfoBtn=(Button)rootView.findViewById(R.id.devInfo);
         devInfoBtn.setOnClickListener(onClickListener);
+
         donationBtn=(Button)rootView.findViewById(R.id.donation);
         donationBtn.setOnClickListener(onClickListener);
+        donationBtn.setVisibility(View.GONE);
+
         manageFunctionBtn=(Button)rootView.findViewById(R.id.functionManage);
         manageFunctionBtn.setOnClickListener(onClickListener);
     }
@@ -192,6 +163,12 @@ public class MainSettingFragment extends Fragment{
             gpsStatusBtn.setBackground(getResources().getDrawable(R.drawable.doing_gps));
         }else{
             gpsStatusBtn.setBackground(getResources().getDrawable(R.drawable.undoing_gps));
+        }
+
+        if(settings.getKeyValue().equals(settings.keyNotExist)){
+            keyChangeBtn.setBackground(getResources().getDrawable(R.drawable.key_not_exist));
+        }else{
+            keyChangeBtn.setBackground(getResources().getDrawable(R.drawable.key_manage));
         }
     }
 
@@ -289,6 +266,7 @@ public class MainSettingFragment extends Fragment{
                             enablePhoneLock.setChecked(true);
                         }
                         break;
+                    case R.id.useUploadAllFileFunction:
                     case R.id.uploadAllWrapper:
                         if(settings.getAvailableUploadAll()){
                             settings.setAvailableUploadAll(false);
@@ -298,6 +276,7 @@ public class MainSettingFragment extends Fragment{
                             enableCamera.setChecked(true);
                         }
                         break;
+                    case R.id.useLoudSoundFunction:
                     case R.id.loudSoundWrapper:
                         if(settings.getAvailableLoudSound()){
                             settings.setAvailableLoudSound(false);
@@ -357,6 +336,11 @@ public class MainSettingFragment extends Fragment{
             case GPS_SETTING_ACTIVITY_CODE:
                 break;
             case PIN_MANAGE:
+                if(resultCode==SUCCESS){
+                    Toast.makeText(getActivity().getApplicationContext(), "비밀번호 재설정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                }else if(resultCode==FAIL){
+                    Toast.makeText(getActivity().getApplicationContext(), "비밀번호 재설정이 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }

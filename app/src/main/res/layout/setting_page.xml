@@ -64,7 +64,7 @@
                     android:layout_height="150dp"
                     android:layout_margin="15dp"
                     android:id="@+id/changeKey"
-                    android:background="@drawable/key_change"/>
+                    android:background="@drawable/key_manage"/>
             </LinearLayout>
 
             <LinearLayout

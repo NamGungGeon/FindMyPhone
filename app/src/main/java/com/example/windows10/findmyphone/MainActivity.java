@@ -33,9 +33,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
+    private final int KEY_SETTING=1233;
     private final int PERMISSION_REQUEST_CODE=1234;
     private final int LOGIN_GOOGLE=1235;
     private final int LOGIN_FACEBOOK=1236;
+
+    final int SUCCESS=2033;
+    final int FAIL=2034;
+
 
     private Settings settings=null;
 
@@ -78,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                     String requestPermissionList[]=new String[]
                             {Manifest.permission.RECEIVE_SMS, Manifest.permission.READ_EXTERNAL_STORAGE,
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION};
-                    //getSettingWritePermission();
                     ActivityCompat.requestPermissions(thisActivty, requestPermissionList, PERMISSION_REQUEST_CODE);
                     explainWhyNeedPermission.dismiss();
                 }
@@ -195,24 +199,26 @@ public class MainActivity extends AppCompatActivity {
                 if(result.isSuccess()){
                     firebaseAuthWithGoogle(result.getSignInAccount());
                     settings.setLoginType(settings.loginType_google);
-                    if(!isExistKeyValue(result.getSignInAccount().getId())){
-                        registerKeyValue();
-                    }else{
-                        getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new MainPageFragment()).commit();
-                    }
+                    registerKeyValue();
                 }else{
                     Toast.makeText(getApplicationContext(),"로그인 실패. 다시 시도하세요.", Toast.LENGTH_SHORT).show();
-
                     if(mGoogleApiClient!=null && mGoogleApiClient.isConnected()){
                         mGoogleApiClient.stopAutoManage(this);
                         mGoogleApiClient.disconnect();
                     }
-
                   }
                 break;
 
             case LOGIN_FACEBOOK:
                 //Dev...
+                break;
+            case KEY_SETTING:
+                if(resultCode==SUCCESS){
+                    Toast.makeText(getApplicationContext(), "키 설정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "키 설정이 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new MainPageFragment()).commit();
                 break;
         }
     }
@@ -228,13 +234,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void registerKeyValue(){
         final DialogMaker maker=new DialogMaker();
-        maker.setValue("Key값을 등록합니다.", "등록", "", new DialogMaker.Callback() {
+        maker.setValue("Key값을 등록합니다.", "등록", "나중에", new DialogMaker.Callback() {
             @Override
             public void callbackMethod() {
-                getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new KeySettingFragment()).commit();
+                startActivityForResult(new Intent(getApplicationContext(), KeySettingActivity.class), KEY_SETTING);
                 maker.dismiss();
             }
-        }, null, getLayoutInflater().inflate(R.layout.key_setting_explain, null));
+        }, new DialogMaker.Callback() {
+            @Override
+            public void callbackMethod() {
+                getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new MainPageFragment()).commit();
+                maker.dismiss();
+            }
+        }, getLayoutInflater().inflate(R.layout.key_setting_explain, null));
         maker.setCancelable(false);
         maker.show(getSupportFragmentManager(), "");
     }
@@ -280,35 +292,5 @@ public class MainActivity extends AppCompatActivity {
         if(mGoogleApiClient!=null){
             mGoogleApiClient.connect();
         }
-    }
-
-    private DatabaseReference getDatabaseReference(){
-        return FirebaseDatabase.getInstance().getReference();
-    }
-
-    public boolean isExistKeyValue(String id){
-        DatabaseReference saved=getDatabaseReference().child("/users/"+ id+"/key");
-        final Checker checker=new Checker();
-        saved.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue()!=null){
-                    checker.check=true;
-                }else{
-                    checker.check=false;
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        return checker.check;
-    }
-    //This class is only used in isExistKeyValue().
-    private class Checker{
-        boolean check=false;
     }
 }
